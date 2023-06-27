@@ -10,7 +10,7 @@ const Contact = () => {
           <a href="mailto:abdouumostafa1@gmail.com">My - Email</a>
         </button>
         <button className="btn3">
-          <a href="https://wa.me/01018122497">My - WhatsApp</a>
+          <a href="https://wa.me/+201018122497">My - WhatsApp</a>
         </button>
         <div className="contact-links">
           {social.map((link) => {
