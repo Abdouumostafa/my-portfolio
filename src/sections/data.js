@@ -67,7 +67,7 @@ export const social = [
   },
   {
     id: nanoid(),
-    url: "https://wa.me/01018122497",
+    url: "https://wa.me/+201018122497",
     icon: <FaWhatsapp />,
   },
 ];
