@@ -1,3 +1,5 @@
+import { Link } from "react-scroll";
+
 const Homeland = () => {
   return (
     <div className="section home" id="/">
