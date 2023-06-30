@@ -1,5 +1,5 @@
 import image from "../assets/e-commerce1.png";
-import image2 from "../assets/e-commerce2.png";
+import image2 from "../assets/business.PNG";
 import image3 from "../assets/e-commerce3.png";
 import image4 from "../assets/e-commerce4.png";
 
@@ -131,13 +131,13 @@ export const projects = [
   },
   {
     id: nanoid(),
-    title: "e-commerce shop app",
-    webUrl: "https://doubleae-commerce.netlify.app/",
-    githubUrl: "https://github.com/Abdouumostafa/e-commerce",
+    title: "modern business app",
+    webUrl: "https://business-app-nkbt.vercel.app/",
+    githubUrl: "https://github.com/Abdouumostafa/business-app",
     description:
-      "You can buy different products for your home, searching about products with several filters and also determine the quantity as you like.",
+      "This modern application is made with new and modern styles and techniques to save and invest your money with easy steps",
     techniques:
-      "This application is made by CSS3 , React JS, React-Hooks, E-commerce api and React Router 6",
+      "This application is made by tailwind css , React JS, React-Hooks and designed from UI/UX design",
     img: image2,
   },
   {
