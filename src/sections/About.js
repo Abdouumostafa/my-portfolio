@@ -12,7 +12,9 @@ const About = () => {
           beneficial relationship.
         </p>
         <button type="button" className="btn">
-          Resume
+            <a href="https://acrobat.adobe.com/id/urn:aaid:sc:EU:6c809d81-7dc0-43b1-806c-a9dbd4f948b9">
+                Resume
+              </a>
         </button>
       </div>
     </section>
