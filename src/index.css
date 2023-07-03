@@ -336,7 +336,8 @@ nav {
   color: var(--primary-600);
 }
 
-.btn:hover {
+.btn:hover,
+.btn:hover a{
   background: var(--primary-600);
   border-color: transparent;
   color: #fff;
