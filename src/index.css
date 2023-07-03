@@ -349,7 +349,7 @@ nav {
 }
 
 .about-section a{
-  color: #000;
+ color: var(--primary-500);
 }
 
 .title {
