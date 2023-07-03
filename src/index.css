@@ -348,6 +348,10 @@ nav {
   padding: 5rem 0;
 }
 
+.about-section a{
+  color: #000;
+}
+
 .title {
   text-align: center;
   text-transform: uppercase;
