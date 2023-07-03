@@ -1,7 +1,7 @@
 import image from "../assets/e-commerce1.png";
 import image2 from "../assets/business.PNG";
 import image3 from "../assets/Capture.PNG";
-import image4 from "../assets/e-commerce4.png";
+import image4 from "../assets/drinks.PNG";
 
 import {
   FaHtml5,
@@ -142,6 +142,17 @@ export const projects = [
   },
   {
     id: nanoid(),
+    title: "drinks search app",
+    webUrl: "https://drinks-app-sigma.vercel.app/",
+    githubUrl: "https://github.com/Abdouumostafa/drinks-app.git",
+    description:
+      "You can search about any drink you like or your favorite drink and see different types of this drink additional to its details and ingredients!!",
+    techniques:
+      "This application is made by CSS3 , React JS, React-Hooks, drinks api (MixMaster), React Router 6 and React Query",
+    img: image4,
+  },
+  {
+    id: nanoid(),
     title: "restaurant app",
     webUrl: "https://resturant-app-chi.vercel.app/",
     githubUrl: "https://github.com/Abdouumostafa/resturant-app.git",
@@ -150,16 +161,5 @@ export const projects = [
     techniques:
       "This application is made by tailwind css , React JS, React-Hooks and designed from UI/UX design ( figma design )",
     img: image3,
-  },
-  {
-    id: nanoid(),
-    title: "e-commerce shop app",
-    webUrl: "https://doubleae-commerce.netlify.app/",
-    githubUrl: "https://github.com/Abdouumostafa/e-commerce",
-    description:
-      "You can buy different products for your home, searching about products with several filters and also determine the quantity as you like.",
-    techniques:
-      "This application is made by CSS3 , React JS, React-Hooks, E-commerce api and React Router 6",
-    img: image4,
   },
 ];
