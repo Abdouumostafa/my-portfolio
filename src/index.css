@@ -343,7 +343,7 @@ nav {
 }
 
 .about-section {
-  min-height: 100vh;
+  min-height: fit-content;
   padding: 5rem 0;
 }
 
@@ -514,6 +514,8 @@ nav {
 .contact {
   position: relative;
   color: #fff;
+  padding: 5rem 0;
+  min-height: fit-content;
   background-color: var(--primary-600);
 }
 

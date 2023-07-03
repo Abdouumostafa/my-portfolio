@@ -1,5 +1,5 @@
 const About = () => {
-  return (
+  return ( 
     <section className="about-section" id="/about">
       <h2 className="title">about me</h2>
       <div className="underline"></div>

@@ -1,6 +1,6 @@
 import image from "../assets/e-commerce1.png";
 import image2 from "../assets/business.PNG";
-import image3 from "../assets/e-commerce3.png";
+import image3 from "../assets/Capture.PNG";
 import image4 from "../assets/e-commerce4.png";
 
 import {
@@ -135,20 +135,20 @@ export const projects = [
     webUrl: "https://business-app-nkbt.vercel.app/",
     githubUrl: "https://github.com/Abdouumostafa/business-app",
     description:
-      "This modern application is made with new and modern styles and techniques to save and invest your money with easy steps",
+      "This modern application is made with new and modern styles and techniques and responsive to fit several sizes of devices to save and invest your money with easy steps",
     techniques:
       "This application is made by tailwind css , React JS, React-Hooks and designed from UI/UX design",
     img: image2,
   },
   {
     id: nanoid(),
-    title: "e-commerce shop app",
-    webUrl: "https://doubleae-commerce.netlify.app/",
-    githubUrl: "https://github.com/Abdouumostafa/e-commerce",
+    title: "restaurant app",
+    webUrl: "https://resturant-app-chi.vercel.app/",
+    githubUrl: "https://github.com/Abdouumostafa/resturant-app.git",
     description:
-      "You can buy different products for your home, searching about products with several filters and also determine the quantity as you like.",
+      "This application introduce a service for restaurant to help customers to discover the restaurant, its services, menu and more and it's designed with modern styles and responsive to all sizes for any device",
     techniques:
-      "This application is made by CSS3 , React JS, React-Hooks, E-commerce api and React Router 6",
+      "This application is made by tailwind css , React JS, React-Hooks and designed from UI/UX design ( figma design )",
     img: image3,
   },
   {
