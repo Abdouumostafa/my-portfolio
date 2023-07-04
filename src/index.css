@@ -520,7 +520,6 @@ nav {
   position: relative;
   color: #fff;
   padding: 5rem 0;
-  max-height: fit-content;
   background-color: var(--primary-600);
 }
 
