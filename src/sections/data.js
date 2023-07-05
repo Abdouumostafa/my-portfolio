@@ -158,7 +158,7 @@ export const projects = [
     webUrl: "https://quiz-app-dun-seven.vercel.app/",
     githubUrl: "https://github.com/Abdouumostafa/quiz-app.git",
     description:
-      "This great application is to test your knowledge in several fields such as: general knowledge, sports, history, computers and more..!!",
+      "This great application is to test your knowledge in several fields such as: general knowledge, sports, history, computers and more..!! additional to you can select the difficulty level and also the number of the questions as you like and the result will be calculated after finishing",
     techniques:
       "This application is made by CSS3 , React JS, React-Hooks, React context and Questions api (opentdb.com)",
     img: image5,
