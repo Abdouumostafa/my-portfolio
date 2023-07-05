@@ -2,6 +2,7 @@ import image from "../assets/e-commerce1.png";
 import image2 from "../assets/business.PNG";
 import image3 from "../assets/Capture.PNG";
 import image4 from "../assets/drinks.PNG";
+import image5 from "../assets/quiz.PNG";
 
 import {
   FaHtml5,
@@ -150,6 +151,17 @@ export const projects = [
     techniques:
       "This application is made by CSS3 , React JS, React-Hooks, drinks api (MixMaster), React Router 6 and React Query",
     img: image4,
+  },
+  {
+    id: nanoid(),
+    title: "general quiz app",
+    webUrl: "https://quiz-app-dun-seven.vercel.app/",
+    githubUrl: "https://github.com/Abdouumostafa/quiz-app.git",
+    description:
+      "This great application is to test your knowledge in several fields such as: general knowledge, sports, history, computers and more..!!",
+    techniques:
+      "This application is made by CSS3 , React JS, React-Hooks, React context and Questions api (opentdb.com)",
+    img: image5,
   },
   {
     id: nanoid(),

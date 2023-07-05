@@ -12,9 +12,9 @@ const Homeland = () => {
               Front-End Developer
             </h2>
             <button type="button" className="btn">
-               <Link to='/about' spy={true} smooth={true} duration={500}>
-                   Know More
-                  </Link>
+              <Link to="/about" spy={true} smooth={true} duration={500}>
+                Know More
+              </Link>
             </button>
           </div>
         </div>
