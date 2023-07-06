@@ -11,7 +11,7 @@ const About = () => {
           upgrade and develop my experience and knowledge in a mutually
           beneficial relationship.
         </p>
-        <button type="button" class="btn">
+        <button type="button" class="btn2">
     <a href="https://drive.google.com/file/d/1W5GI1XBq_Jd5Ju5y7zMkSGQglTDTBxdf/view?usp=drive_link">Resume</a></button>
       </div>
     </section>
