@@ -26,7 +26,7 @@ const Projects = () => {
                   </button>
                 </div>
               </div>
-              <div>
+              <div className='projectImg'>
                 <a href={webUrl}>
                   <img src={img} alt="" className="img" />
                 </a>
