@@ -8,7 +8,7 @@ import {
   FaHtml5,
   FaCss3,
   FaBootstrap,
-  FaFacebook,
+  FaLinkedin,
   FaGithub,
   FaReact,
   FaWhatsapp,
@@ -53,8 +53,8 @@ export const links = [
 export const social = [
   {
     id: nanoid(),
-    url: "https://www.facebook.com/profile.php?id=100054024318624&mibextid=ZbWKwL",
-    icon: <FaFacebook />,
+    url: "www.linkedin.com/in/abdelrahman-mostafa-ahmed-489404224",
+    icon: <FaLinkedin />,
   },
   {
     id: nanoid(),
