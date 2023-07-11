@@ -53,7 +53,7 @@ export const links = [
 export const social = [
   {
     id: nanoid(),
-    url: "www.linkedin.com/in/abdelrahman-mostafa-ahmed-489404224",
+    url: "https://www.linkedin.com/in/abdelrahman-mostafa-ahmed-489404224",
     icon: <FaLinkedin />,
   },
   {
