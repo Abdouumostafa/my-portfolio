@@ -525,7 +525,7 @@ nav {
 
 .contact .title {
   color: #fff;
-  font-weight: 900;
+  font-weight: 500;
 }
 
 .contact-content {
@@ -538,7 +538,7 @@ display: flex;
 }
 
 .contact-content h4 {
-  font-weight: 700;
+  font-weight: 600;
   text-align: center;
 }
 
@@ -548,7 +548,7 @@ display: flex;
   border-radius: 6px;
   background-color: transparent;
   border-color: var(--primary-600);
-  font-weight: 900;
+  font-weight: 600;
   cursor: pointer;
   margin: 0 40px;
   transition: var(--transition);
