@@ -413,6 +413,7 @@ nav {
 .section-fit {
   height: fit-content;
   max-width: 100%;
+      overflow-x: hidden;
 }
 
 .project-title {
