@@ -16,7 +16,7 @@ const Contact = () => {
           {social.map((link) => {
             const { id, url, icon } = link;
             return (
-              <div key={id} className="link">
+             <div key={id} className="link">
                 <a href={url}>{icon}</a>
               </div>
             );
