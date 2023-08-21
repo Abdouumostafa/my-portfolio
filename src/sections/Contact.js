@@ -1,7 +1,7 @@
 import { social } from "./data";
 
 const Contact = () => {
-  return ( 
+  return (  
     <div className="contact" id="/contact">
       <h2 className="title">Contact me</h2>
       <div className="contact-content">
