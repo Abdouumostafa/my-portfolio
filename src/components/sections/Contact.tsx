@@ -90,7 +90,7 @@ export const Contact = () => {
     {
       icon: Linkedin,
       label: "LinkedIn",
-      href: "https://linkedin.com/in/abdelrahman-mostafa",
+      href: "https://www.linkedin.com/in/abdelrahman-mostafa-489404224/",
       color: "hover:bg-blue-50 hover:text-blue-600"
     }
   ];

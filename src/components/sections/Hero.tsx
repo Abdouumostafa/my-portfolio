@@ -63,16 +63,16 @@ export const Hero = () => {
               </div>
             </div>
 
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-extralight mb-4 text-white leading-none tracking-tight animate-fade-in">
+            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-extralight mb-4 text-white leading-none tracking-tight animate-fade-in">
               ABDELRAHMAN
             </h1>
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-extralight mb-4 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent leading-none tracking-tight animate-fade-in">
+            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-extralight mb-4 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent leading-none tracking-tight animate-fade-in">
               MOSTAFA
             </h1>
           </div>
 
           {/* Animated Subtitle */}
-          <div className="text-xl md:text-3xl text-slate-300 mb-5 h-12 flex items-center justify-center font-light tracking-wide">
+          <div className="text-lg sm:text-xl md:text-3xl text-slate-300 mb-5 h-12 flex items-center justify-center font-light tracking-wide">
             <span className="border-r-2 border-blue-400 pr-3 animate-pulse">
               {displayedText}
             </span>
@@ -98,7 +98,7 @@ export const Hero = () => {
               variant="outline"
               size="icon"
               className="w-14 h-14 rounded-full bg-white/5 border-white/20 hover:bg-blue-500/20 hover:border-blue-400/40 text-white transition-all duration-500 hover:scale-110 backdrop-blur-md group"
-              onClick={() => window.open("https://linkedin.com/in/abdelrahman-mostafa", "_blank")}
+              onClick={() => window.open("https://www.linkedin.com/in/abdelrahman-mostafa-489404224/", "_blank")}
             >
               <Linkedin size={20} className="group-hover:scale-110 transition-transform duration-300" />
             </Button>
