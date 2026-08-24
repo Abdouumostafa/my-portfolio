@@ -135,6 +135,7 @@ export default function HeroNavTransition({
               start: () => `top -=${hero.offsetHeight * 0.2}`,
               toggleActions: "play none none reverse",
               onEnter: () => {
+                // Instantly hide the active line before flight
                 fixedLinksRef.current?.classList.add("is-scrolled");
                 gsap.to(".navbar-bg", { opacity: 1, duration: 0.35, ease: "power2.out" });
                 gsap.to(".navbar-content", {
@@ -206,10 +207,9 @@ export default function HeroNavTransition({
             SOCIALS.forEach((key, i) => {
               const heroEl = heroSocialIcons[key];
               const navEl = navSocialIcons[key];
-              const d = socialDeltas[key];
-              if (!heroEl || !navEl || !d) return;
+              if (!heroEl || !navEl) return;
               const t = si * 0.05 + i * 0.05;
-              tl.to(heroEl, { x: d.x, y: d.y, opacity: 0, duration: 0.4, ease: "power2.out" }, t);
+              tl.to(heroEl, { y: -20, opacity: 0, duration: 0.4, ease: "power2.out" }, t);
               tl.to(navEl, { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, t + 0.35);
             });
           } else {
@@ -238,9 +238,6 @@ export default function HeroNavTransition({
                 ease: "power3.inOut",
               }, startAt);
 
-              const dash = link.querySelector("span > span");
-              if (dash) tl.to(dash, { width: 0, opacity: 0, duration: 0.4, ease: "power2.inOut" }, startAt);
-
               si++;
             });
 
@@ -250,14 +247,17 @@ export default function HeroNavTransition({
               si++;
             }
 
-            // 3. Social icons — same ) curve, staggered one after another
-            SOCIALS.forEach((key) => {
+            // 3. Social icons — simple slide and fade (no swoop flight)
+            SOCIALS.forEach((key, i) => {
               const heroEl = heroSocialIcons[key];
               const navEl = navSocialIcons[key];
-              const d = socialDeltas[key];
-              if (!heroEl || !navEl || !d) return;
-              swoop(heroEl, d, si, si * 0.08, navEl);
-              si++;
+              if (!heroEl || !navEl) return;
+              const startAt = si * 0.08 + i * 0.05;
+              
+              // Slide up and fade out
+              tl.to(heroEl, { y: -20, opacity: 0, duration: 0.4, ease: "power2.out" }, startAt);
+              // Fade in nav icon
+              tl.to(navEl, { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, startAt + 0.2);
             });
           }
 

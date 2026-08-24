@@ -93,7 +93,7 @@ body {
    navbar by HeroNavTransition) ── */
 .hero-nav-link {
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 600;
   color: rgba(255, 255, 255, 0.6);
   transition: color 0.25s ease;
   text-decoration: none;
@@ -107,13 +107,32 @@ body {
 
 .hero-nav-link[data-active="true"] {
   color: rgba(255, 255, 255, 1);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 /* Once the link is physically inside the navbar, restyle it to the compact
    size automatically via a descendant selector — no JS class toggling needed. */
 [data-navbar] .hero-nav-link {
   font-size: 0.875rem;
+}
+
+/* ── Active Line CSS Animation ── */
+/* When .is-scrolled is removed (scrolling up), wait 0.65s for the links to land before growing back */
+.desktop-active-line {
+  transition:
+    width 0.3s ease 0.65s,
+    opacity 0.3s ease 0.65s;
+  width: 1.5rem; /* w-6 */
+  opacity: 1;
+}
+
+/* When .is-scrolled is added (scrolling down), shrink and hide immediately with 0 delay */
+.is-scrolled .desktop-active-line {
+  width: 0 !important;
+  opacity: 0 !important;
+  transition:
+    width 0.2s ease 0s,
+    opacity 0.2s ease 0s;
 }
 
 /* ── Scroll indicator bounce ── */
