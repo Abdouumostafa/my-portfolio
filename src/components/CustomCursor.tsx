@@ -38,7 +38,7 @@ export const DEFAULTS: SnapCursorConfig = {
   dotRadius: 4,
   ringThickness: 1.5,
   ringColor: "#ffffff",
-  dotColor: "#2B3FF0",
+  dotColor: "#FFFFFF",
   pad: 6, // Reduced from 8 for a tighter, sleeker fit
   chase: 12,
   snapChase: 20,
