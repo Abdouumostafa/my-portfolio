@@ -4,13 +4,14 @@ import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import HeroSection from "./HeroSection";
 import Navbar from "./Navbar";
 import { NAV_LINKS } from "./HeroSection";
 
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin, ScrollToPlugin);
 
 export default function HeroNavTransition({
   children,
@@ -34,6 +35,30 @@ export default function HeroNavTransition({
     };
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  // Premium GSAP smooth scroll for all internal anchor links
+  useEffect(() => {
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest("a");
+      if (!target) return;
+
+      const href = target.getAttribute("href");
+      if (href && href.startsWith("#") && href.length > 1) {
+        e.preventDefault();
+        const dest = document.querySelector(href);
+        if (dest) {
+          gsap.to(window, {
+            duration: 1.2,
+            scrollTo: { y: dest, autoKill: true },
+            ease: "back.inOut(1)",
+          });
+        }
+      }
+    };
+
+    document.addEventListener("click", handleAnchorClick);
+    return () => document.removeEventListener("click", handleAnchorClick);
   }, []);
 
   useGSAP(
@@ -253,7 +278,7 @@ export default function HeroNavTransition({
               const navEl = navSocialIcons[key];
               if (!heroEl || !navEl) return;
               const startAt = si * 0.08 + i * 0.05;
-              
+
               // Slide up and fade out
               tl.to(heroEl, { y: -20, opacity: 0, duration: 0.4, ease: "power2.out" }, startAt);
               // Fade in nav icon

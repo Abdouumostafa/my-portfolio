@@ -99,6 +99,8 @@ body {
   text-decoration: none;
   line-height: 1;
   white-space: nowrap;
+  width: max-content;
+  display: block;
 }
 
 .hero-nav-link:hover {

@@ -1,248 +1,282 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useSyncExternalStore, useState } from "react";
+/**
+ * SnapCursor
+ * -------------
+ * A sleek professional cursor featuring a dot that tracks the mouse instantly,
+ * and a trailing ring. When hovering over interactive elements, the ring
+ * magnetically snaps to the bounding box of the element and morphs into a pill
+ * or rounded rectangle matching the element's shape.
+ */
 
-// Always returns true on the client; false during SSR.
-// This avoids calling setState inside useEffect.
-function useIsMounted() {
-  return useSyncExternalStore(
-    () => () => { },
-    () => true,
-    () => false
-  );
-}
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 
-export default function CustomCursor() {
-  const isMounted = useIsMounted();
-  const [isCoarse, setIsCoarse] = useState(() =>
-    typeof window !== "undefined"
-      ? window.matchMedia("(pointer: coarse)").matches
-      : false
-  );
+export type SnapCursorConfig = {
+  /** Radius of the outer ring at rest. */
+  ringRadius: number;
+  /** Radius of the inner dot. */
+  dotRadius: number;
+  /** Thickness of the outer ring stroke. */
+  ringThickness: number;
+  /** Color of the outer ring. */
+  ringColor: string;
+  /** Color of the inner dot. */
+  dotColor: string;
+  /** Padding added around elements when snapped. */
+  pad: number;
+  /** Follow speed for the ring (lower = more lag). */
+  chase: number;
+  /** Follow speed when snapping to an element (usually faster). */
+  snapChase: number;
+  /** Elements that trigger the magnetic snap. */
+  selector: string;
+};
 
-  const dotRef = useRef<HTMLDivElement>(null);
-  const circleRef = useRef<HTMLDivElement>(null);
-  const labelRef = useRef<HTMLDivElement>(null);
+export const DEFAULTS: SnapCursorConfig = {
+  ringRadius: 22,
+  dotRadius: 4,
+  ringThickness: 1.5,
+  ringColor: "#ffffff",
+  dotColor: "#2B3FF0",
+  pad: 6, // Reduced from 8 for a tighter, sleeker fit
+  chase: 12,
+  snapChase: 20,
+  selector: "a, button, [role='button'], input, select, textarea, summary, [data-cursor]",
+};
 
-  const mouse = useRef({ x: -100, y: -100 });
-  const circle = useRef({ x: -100, y: -100, vx: 0, vy: 0 });
-  const magnetTarget = useRef<{ x: number; y: number; w: number; h: number; } | null>(null);
-  const targetDotScale = useRef(1);
-  const targetCircleSize = useRef(28); // base 28px
-  const currentCircleSize = useRef(28);
-  const dotScale = useRef(1);
-  const speed = useRef(0);
-  const labelText = useRef("");
-  const rafId = useRef<number>(0);
+/** Frame-rate independent damping */
+const damp = (current: number, target: number, lambda: number, dt: number) =>
+  current + (target - current) * (1 - Math.exp(-lambda * dt));
 
-  const updateLabel = useCallback((text: string) => {
-    if (!labelRef.current) return;
-    if (text && labelText.current !== text) {
-      labelRef.current.textContent = text;
-      labelRef.current.style.opacity = "1";
-      labelRef.current.style.transform = "translateX(-50%) translateY(0) scale(1)";
-    } else if (!text && labelText.current) {
-      labelRef.current.style.opacity = "0";
-      labelRef.current.style.transform = "translateX(-50%) translateY(4px) scale(0.9)";
-    }
-    labelText.current = text;
+/** Safe rounded rectangle drawing path */
+const drawRoundRect = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number
+) => {
+  if (w < 2 * r) r = w / 2;
+  if (h < 2 * r) r = h / 2;
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+};
+
+export default function CustomCursor(props: Partial<SnapCursorConfig> = {}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [enabled, setEnabled] = useState(false);
+
+  const cfg = useRef<SnapCursorConfig>({ ...DEFAULTS, ...props });
+  useEffect(() => {
+    cfg.current = { ...DEFAULTS, ...props };
+  });
+
+  // Only enable on devices with a fine pointer (mouse/trackpad)
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: fine)");
+    const sync = () => setEnabled(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
   }, []);
 
+  // Hide native cursor completely
   useEffect(() => {
-    if (isCoarse) return;
+    if (!enabled) return;
+    const style = document.createElement("style");
+    style.textContent = `*, *::before, *::after { cursor: none !important; }`;
+    document.head.appendChild(style);
+    return () => style.remove();
+  }, [enabled]);
 
-    const handleTouch = () => {
-      setIsCoarse(true);
-      window.removeEventListener("touchstart", handleTouch);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!enabled || !canvas) return;
+
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (!ctx) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let dpr = 1;
+    let width = 0;
+    let height = 0;
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
-    window.addEventListener("touchstart", handleTouch, { passive: true });
+    resize();
 
-    let prevX = -100;
-    let prevY = -100;
+    // Raw mouse position
+    let mouseX = -400;
+    let mouseY = -400;
 
-    const onMouseMove = (e: MouseEvent) => {
-      const dx = e.clientX - prevX;
-      const dy = e.clientY - prevY;
-      speed.current = Math.sqrt(dx * dx + dy * dy);
-      prevX = e.clientX;
-      prevY = e.clientY;
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
+    // Ring state
+    const ring = {
+      x: mouseX,
+      y: mouseY,
+      w: cfg.current.ringRadius * 2,
+      h: cfg.current.ringRadius * 2,
+      r: cfg.current.ringRadius,
+    };
 
-      // Instant dot
-      if (dotRef.current) {
-        dotRef.current.style.left = `${e.clientX}px`;
-        dotRef.current.style.top = `${e.clientY}px`;
+    let target: HTMLElement | null = null;
+    let seeded = false;
+    let presence = 0;
+    let clickScale = 1;
+    let lock = 0; // Tracks if we are hovering a target for transitions
+
+    const onMove = (e: PointerEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (!seeded) {
+        seeded = true;
+        ring.x = mouseX;
+        ring.y = mouseY;
       }
-    };
 
-    const onMouseOver = (e: MouseEvent) => {
       const el = e.target as HTMLElement | null;
-      if (!el) return;
-
-      const link = el.closest("a");
-      const btn = el.closest("button");
-      const heading = el.closest("h1, h2, h3");
-      const interactive = link || btn;
-
-      if (interactive) {
-        // Magnetic snap: lock circle to element center
-        const rect = interactive.getBoundingClientRect();
-        magnetTarget.current = {
-          x: rect.left + rect.width / 2,
-          y: rect.top + rect.height / 2,
-          w: rect.width,
-          h: rect.height,
-        };
-        targetDotScale.current = 0;
-        targetCircleSize.current = Math.max(rect.width, rect.height) + 20;
-        updateLabel(link ? "View" : "Click");
-      } else if (heading) {
-        // Text hover: big crisp circle
-        magnetTarget.current = null;
-        targetDotScale.current = 0;
-        targetCircleSize.current = 120;
-        updateLabel("");
-      } else {
-        magnetTarget.current = null;
-        targetDotScale.current = 1;
-        targetCircleSize.current = 28;
-        updateLabel("");
+      const next = el ? el.closest<HTMLElement>(cfg.current.selector) : null;
+      if (next !== target) {
+        target = next;
       }
     };
 
-    const onMouseDown = () => {
-      targetDotScale.current *= 0.5;
-      targetCircleSize.current *= 0.8;
+    const onDown = () => {
+      clickScale = 0.85; // Shrink on click
     };
 
-    const onMouseLeave = () => {
-      if (dotRef.current) dotRef.current.style.opacity = "0";
-      if (circleRef.current) circleRef.current.style.opacity = "0";
-      if (labelRef.current) labelRef.current.style.opacity = "0";
+    const onLeave = () => {
+      seeded = false;
+      target = null;
     };
 
-    const onMouseEnter = () => {
-      if (dotRef.current) dotRef.current.style.opacity = "1";
-      if (circleRef.current) circleRef.current.style.opacity = "1";
+    const tick = (_time: number, deltaMS: number) => {
+      const c = cfg.current;
+      const dt = Math.min(deltaMS, 50) / 1000;
+
+      if (target && !target.isConnected) target = null;
+
+      presence = damp(presence, seeded ? 1 : 0, 10, dt);
+      clickScale = damp(clickScale, 1, 15, dt); // Spring back scale
+      lock = damp(lock, target ? 1 : 0, 12, dt); // Smoothly transition into lock state
+
+      // Determine ring target dimensions and position
+      let tx = mouseX;
+      let ty = mouseY;
+      let tw = c.ringRadius * 2;
+      let th = c.ringRadius * 2;
+      let tr = c.ringRadius;
+      let lambda = reduced ? 999 : c.chase;
+
+      if (target) {
+        const rect = target.getBoundingClientRect();
+        tw = rect.width + c.pad * 2;
+        th = rect.height + c.pad * 2;
+        tx = rect.left + rect.width / 2;
+        ty = rect.top + rect.height / 2;
+        lambda = reduced ? 999 : c.snapChase;
+
+        // Try to read border radius of the target element
+        const style = window.getComputedStyle(target);
+        const radiusStr = style.borderRadius;
+        if (radiusStr.includes('%') || radiusStr.includes('999')) {
+          tr = 999; // pill shape
+        } else {
+          const parsed = parseFloat(radiusStr);
+          // Default to pill shape for links, otherwise use element's radius or 8px
+          if (parsed === 0 && target.tagName === 'A') {
+            tr = 999;
+          } else {
+            tr = parsed || 8;
+          }
+        }
+      }
+
+      // Smoothly interpolate the ring to its targets
+      ring.x = damp(ring.x, tx, lambda, dt);
+      ring.y = damp(ring.y, ty, lambda, dt);
+      ring.w = damp(ring.w, tw, lambda, dt);
+      ring.h = damp(ring.h, th, lambda, dt);
+      ring.r = damp(ring.r, tr, lambda, dt);
+
+      ctx.clearRect(0, 0, width, height);
+      if (presence < 0.01) return;
+
+      ctx.globalAlpha = presence;
+
+      // Draw the morphing ring
+      const drawW = ring.w * clickScale;
+      const drawH = ring.h * clickScale;
+      // Cap radius to half of the shortest side to avoid drawing errors
+      const safeRadius = Math.max(0, Math.min(ring.r, Math.min(drawW, drawH) / 2));
+
+      drawRoundRect(
+        ctx,
+        ring.x - drawW / 2,
+        ring.y - drawH / 2,
+        drawW,
+        drawH,
+        safeRadius * clickScale
+      );
+
+      // Add a subtle transparent fill when snapped
+      if (lock > 0.01) {
+        ctx.fillStyle = `rgba(255, 255, 255, ${lock * 0.1})`;
+        ctx.fill();
+      }
+
+      ctx.strokeStyle = c.ringColor;
+      ctx.lineWidth = c.ringThickness;
+      ctx.stroke();
+
+      // Draw the inner dot (always tracks the mouse instantly)
+      ctx.beginPath();
+      // Shrink the dot to half its size when locked to avoid obscuring text
+      const effectiveDotRadius = c.dotRadius * (1 - lock * 0.5) * clickScale;
+      ctx.arc(mouseX, mouseY, effectiveDotRadius, 0, Math.PI * 2);
+      ctx.fillStyle = c.dotColor;
+      ctx.fill();
     };
 
-    window.addEventListener("mousemove", onMouseMove, { passive: true });
-    window.addEventListener("mouseover", onMouseOver, { passive: true });
-    window.addEventListener("mousedown", onMouseDown);
-    document.documentElement.addEventListener("mouseleave", onMouseLeave);
-    document.documentElement.addEventListener("mouseenter", onMouseEnter);
-
-    // ---- SPRING PHYSICS LOOP ----
-    const stiffness = 0.25;
-    const damping = 0.5;
-
-    const animate = () => {
-      // Determine chase target: magnetic element center or raw mouse
-      let tx = mouse.current.x;
-      let ty = mouse.current.y;
-
-      if (magnetTarget.current) {
-        // Magnetic snap: physically pulls toward center but tracks mouse slightly
-        tx = mouse.current.x + (magnetTarget.current.x - mouse.current.x) * 0.8;
-        ty = mouse.current.y + (magnetTarget.current.y - mouse.current.y) * 0.8;
-      }
-
-      // Spring force
-      const dx = tx - circle.current.x;
-      const dy = ty - circle.current.y;
-      circle.current.vx += dx * stiffness;
-      circle.current.vy += dy * stiffness;
-      circle.current.vx *= damping;
-      circle.current.vy *= damping;
-      circle.current.x += circle.current.vx;
-      circle.current.y += circle.current.vy;
-
-      // Velocity-responsive size boost (grows when moving fast, shrinks when stopped)
-      const velocityBoost = Math.min(speed.current * 1.5, 24);
-      const effectiveTarget = targetCircleSize.current + velocityBoost;
-      currentCircleSize.current += (effectiveTarget - currentCircleSize.current) * 0.15;
-
-      // Smooth dot scale
-      dotScale.current += (targetDotScale.current - dotScale.current) * 0.15;
-
-      // Decay speed
-      speed.current *= 0.85;
-
-      // Apply transforms
-      if (circleRef.current) {
-        const s = currentCircleSize.current;
-        circleRef.current.style.left = `${circle.current.x}px`;
-        circleRef.current.style.top = `${circle.current.y}px`;
-        circleRef.current.style.width = `${s}px`;
-        circleRef.current.style.height = `${s}px`;
-        circleRef.current.style.marginLeft = `${-s / 2}px`;
-        circleRef.current.style.marginTop = `${-s / 2}px`;
-      }
-
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate(-50%, -50%) scale(${dotScale.current})`;
-      }
-
-      if (labelRef.current) {
-        labelRef.current.style.left = `${circle.current.x}px`;
-        labelRef.current.style.top = `${circle.current.y + currentCircleSize.current / 2 + 10}px`;
-      }
-
-      rafId.current = requestAnimationFrame(animate);
-    };
-
-    rafId.current = requestAnimationFrame(animate);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerdown", onDown, { passive: true });
+    document.addEventListener("pointerleave", onLeave);
+    window.addEventListener("blur", onLeave);
+    window.addEventListener("resize", resize);
+    gsap.ticker.add(tick);
 
     return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mousedown", onMouseDown);
-      document.documentElement.removeEventListener("mouseleave", onMouseLeave);
-      document.body.removeEventListener("mouseenter", onMouseEnter);
-      window.removeEventListener("touchstart", handleTouch);
-      cancelAnimationFrame(rafId.current);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("blur", onLeave);
+      window.removeEventListener("resize", resize);
+      gsap.ticker.remove(tick);
     };
-  }, [updateLabel, isCoarse]);
+  }, [enabled]);
 
-  if (!isMounted || isCoarse) return null;
+  if (!enabled) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[999999] select-none" aria-hidden="true">
-      {/* Instant precision dot */}
-      <div
-        ref={dotRef}
-        className="fixed w-2 h-2 rounded-full bg-white pointer-events-none"
-        style={{
-          mixBlendMode: "difference",
-          willChange: "left, top, transform, opacity",
-          transition: "opacity 0.3s",
-        }}
-      />
-
-      {/* Spring-physics trailing circle — crisp border, no blur */}
-      <div
-        ref={circleRef}
-        className="fixed rounded-full border-2 border-white pointer-events-none"
-        style={{
-          mixBlendMode: "difference",
-          willChange: "left, top, width, height, margin",
-          transition: "opacity 0.3s, border-width 0.3s",
-          imageRendering: "crisp-edges",
-          backfaceVisibility: "hidden",
-        }}
-      />
-
-      {/* Contextual hover label */}
-      <div
-        ref={labelRef}
-        className="fixed text-[10px] font-mono font-semibold tracking-[0.2em] uppercase text-white opacity-0 pointer-events-none"
-        style={{
-          mixBlendMode: "difference",
-          willChange: "left, top, opacity, transform",
-          transition: "opacity 0.25s ease, transform 0.25s ease",
-          transform: "translateX(-50%) translateY(4px) scale(0.9)",
-        }}
-      />
-    </div>
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 z-[999999]"
+    />
   );
 }

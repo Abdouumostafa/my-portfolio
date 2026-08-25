@@ -16,8 +16,22 @@ const bbhBartle = BBH_Bartle({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: "Abdelrahman Mostafa | Frontend Developer",
   description: "Portfolio built with Next.js, TypeScript, and Tailwind CSS",
+  openGraph: {
+    title: "Abdelrahman Mostafa | Frontend Developer",
+    description: "Creative Frontend Developer crafting dynamic, high-performance web experiences. Explore my portfolio of Next.js and React projects.",
+    url: "/",
+    siteName: "Abdelrahman Mostafa Portfolio",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Abdelrahman Mostafa | Frontend Developer",
+    description: "Creative Frontend Developer crafting dynamic, high-performance web experiences. Explore my portfolio of Next.js and React projects.",
+  },
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",

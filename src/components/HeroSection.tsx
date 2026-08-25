@@ -39,7 +39,10 @@ const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
           </div>
         </div>
         <div className="h-full w-full bg-grey-darker flex items-center justify-center">
-          <h2 className="font-bartle text-4xl sm:text-6xl text-white/20 uppercase">Hero Section</h2>
+          <h1 className="font-bartle text-4xl sm:text-6xl text-white/20 uppercase text-center flex flex-col gap-2">
+            <span>Abdelrahman Mostafa</span>
+            <span className="text-2xl sm:text-4xl text-white/10">Frontend Developer</span>
+          </h1>
         </div>
       </section>
     );
