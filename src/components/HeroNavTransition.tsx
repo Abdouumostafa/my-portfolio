@@ -157,7 +157,7 @@ export default function HeroNavTransition({
           const tl = gsap.timeline({
             scrollTrigger: {
               trigger: hero,
-              start: () => `top -=${hero.offsetHeight * 0.2}`,
+              start: () => `top -=${hero.offsetHeight * 0.1}`,
               toggleActions: "play none none reverse",
               onEnter: () => {
                 // Instantly hide the active line before flight
