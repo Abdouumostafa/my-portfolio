@@ -186,7 +186,7 @@ const ScrollDownLink = () => {
   );
 };
 
-const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
+const HeroSection = forwardRef<HTMLElement, { mouseOffset?: { x: number; y: number } }>(function HeroSection(_, ref) {
   const { boxRef, textRef } = useFitToColumn();
   const stageRef = useRef<HTMLDivElement>(null);
 
