@@ -438,13 +438,13 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
             {/* Rule */}
             <span
               aria-hidden="true"
-              className="hero-hrule mt-8 block h-px w-full max-w-[34rem] bg-gradient-to-r from-white/25 to-transparent lg:mt-9"
+              className="hero-hrule my-4 lg:my-8 block h-px w-full max-w-136 bg-linear-to-r from-white/25 to-transparent lg:mt-9"
             />
 
             {/* Tagline — one colour, words settling in */}
             <p
-              className="mt-7 max-w-[34rem] font-medium leading-[1.75] text-white/80 lg:mt-8"
-              style={{ fontSize: "clamp(1.05rem,1.15vw,1.4rem)" }}
+              className="max-w-136 font-medium leading-[1.75] text-white/80"
+              style={{ fontSize: "clamp(0.85rem,1.5vw,1.2rem)" }}
             >
               {TAGLINE.split(" ").map((word, i) => (
                 <span
@@ -454,10 +454,6 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
                   {word}
                 </span>
               ))}
-              <span
-                aria-hidden="true"
-                className="tag-caret inline-block h-[1.05em] w-[2px] translate-y-[0.18em] bg-white/70"
-              />
             </p>
 
             {/* Stack */}
