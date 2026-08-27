@@ -15,27 +15,67 @@ const bbhBartle = BBH_Bartle({
   weight: ["400"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
-  title: "Abdelrahman Mostafa | Frontend Developer",
-  description: "Portfolio built with Next.js, TypeScript, and Tailwind CSS",
+  metadataBase: new URL(siteUrl),
+  title: "Abdelrahman Mostafa | React Frontend Developer",
+  description:
+    "Abdelrahman Mostafa — React front-end developer with 3+ years of experience building web apps, dashboards, and SaaS platforms. View projects and experience.",
   openGraph: {
-    title: "Abdelrahman Mostafa | Frontend Developer",
-    description: "Creative Frontend Developer crafting dynamic, high-performance web experiences. Explore my portfolio of Next.js and React projects.",
+    title: "Abdelrahman Mostafa | React Frontend Developer",
+    description:
+      "React front-end developer with 3+ years building high-performance web apps, dashboards, and SaaS platforms. Explore projects and experience.",
     url: "/",
     siteName: "Abdelrahman Mostafa Portfolio",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Abdelrahman Mostafa — React Frontend Developer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Abdelrahman Mostafa | Frontend Developer",
-    description: "Creative Frontend Developer crafting dynamic, high-performance web experiences. Explore my portfolio of Next.js and React projects.",
+    title: "Abdelrahman Mostafa | React Frontend Developer",
+    description:
+      "React front-end developer with 3+ years building high-performance web apps, dashboards, and SaaS platforms.",
+    images: ["/og.png"],
   },
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
     apple: "/logo.png",
+  },
+};
+
+/* JSON-LD structured data — helps search engines understand who this
+   site belongs to and surface rich results (knowledge panel, etc.). */
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  mainEntity: {
+    "@type": "Person",
+    name: "Abdelrahman Mostafa",
+    jobTitle: "React Frontend Developer",
+    url: siteUrl,
+    sameAs: [
+      "https://github.com/Abdouumostafa",
+      "https://www.linkedin.com/in/abdelrahman-mostafa-489404224/",
+      "https://www.facebook.com/abdo.mostafa.551661",
+    ],
+    knowsAbout: [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "GSAP",
+      "Frontend Development",
+    ],
   },
 };
 
@@ -50,6 +90,12 @@ export default function RootLayout({
       className={`${urbanist.variable} ${bbhBartle.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
         <CustomCursor />
         {children}
@@ -57,4 +103,3 @@ export default function RootLayout({
     </html>
   );
 }
-

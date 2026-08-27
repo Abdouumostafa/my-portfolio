@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -23,19 +23,6 @@ export default function HeroNavTransition({
   const navbarRef = useRef<HTMLElement>(null);
   const fixedLinksRef = useRef<HTMLDivElement>(null);
   const activeSection = useActiveSection(NAV_LINKS.map(l => l.id));
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-
-  // Mouse parallax for hero
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX - innerWidth / 2) / (innerWidth / 2);
-      const y = (e.clientY - innerHeight / 2) / (innerHeight / 2);
-      setMouseOffset({ x: x * 12, y: y * 12 });
-    };
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   // Premium GSAP smooth scroll for all internal anchor links
   useEffect(() => {
@@ -292,6 +279,10 @@ export default function HeroNavTransition({
 
       // ── Mobile: Navbar always visible ──
       mm.add("(max-width: 767px)", () => {
+        // fixedLinks is already hidden on mobile via the `hidden md:flex`
+        // classes below (no JS needed for that, and no flash on reload).
+        // This gsap.set is kept only as a safety net for any inline style
+        // an earlier desktop match might have left behind.
         gsap.set(fixedLinks, { display: "none" });
         gsap.set(navbar, { pointerEvents: "auto" });
         gsap.set(".navbar-content", { opacity: 1 }); // Always visible on mobile
@@ -329,10 +320,18 @@ export default function HeroNavTransition({
     <div ref={containerRef}>
       <Navbar ref={navbarRef} />
 
-      {/* Fixed nav links — stay on screen while scrolling through hero, then swoop into navbar */}
+      {/*
+        Fixed nav links — stay on screen while scrolling through hero, then
+        swoop into navbar. `hidden md:flex` hides these on mobile purely via
+        CSS from the very first paint (including hard reloads, before any
+        JS/hydration runs). Previously this was `flex` unconditionally and
+        relied on GSAP's `mm.add("(max-width: 767px)", ...)` to set
+        `display: none` after mount — which meant the links briefly flashed
+        visible on mobile on every reload before GSAP hid them.
+      */}
       <div
         ref={fixedLinksRef}
-        className="fixed top-6 sm:top-8 left-6 sm:left-10 z-10000 flex flex-col gap-3 pointer-events-auto"
+        className="fixed top-6 sm:top-8 left-6 sm:left-10 z-10000 hidden md:flex flex-col gap-3 pointer-events-auto"
         aria-label="Navigation"
       >
         {NAV_LINKS.map((link) => (
@@ -355,7 +354,7 @@ export default function HeroNavTransition({
         ))}
       </div>
 
-      <HeroSection ref={heroRef} mouseOffset={mouseOffset} />
+      <HeroSection ref={heroRef} />
       {children}
     </div>
   );

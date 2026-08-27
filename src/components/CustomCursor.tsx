@@ -139,10 +139,12 @@ export default function CustomCursor(props: Partial<SnapCursorConfig> = {}) {
     let presence = 0;
     let clickScale = 1;
     let lock = 0; // Tracks if we are hovering a target for transitions
+    let dirty = true; // Only redraw when something changed
 
     const onMove = (e: PointerEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
+      dirty = true;
       if (!seeded) {
         seeded = true;
         ring.x = mouseX;
@@ -158,16 +160,23 @@ export default function CustomCursor(props: Partial<SnapCursorConfig> = {}) {
 
     const onDown = () => {
       clickScale = 0.85; // Shrink on click
+      dirty = true;
     };
 
     const onLeave = () => {
       seeded = false;
       target = null;
+      dirty = true;
     };
 
     const tick = (_time: number, deltaMS: number) => {
       const c = cfg.current;
       const dt = Math.min(deltaMS, 50) / 1000;
+
+      // Skip redraw only when cursor is invisible and nothing triggered a change.
+      // While presence > 0 (damping/spring still settling), always redraw.
+      if (!dirty && presence < 0.01) return;
+      dirty = false;
 
       if (target && !target.isConnected) target = null;
 

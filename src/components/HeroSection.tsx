@@ -6,6 +6,7 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
+  useState,
 } from "react";
 import type { CSSProperties } from "react";
 import gsap from "gsap";
@@ -62,10 +63,24 @@ const chrome: CSSProperties = {
 const LABEL =
   "text-[0.58rem] uppercase tracking-[0.22em] text-white/55 sm:text-[0.66rem] sm:tracking-[0.3em]";
 
+/**
+ * Fallback font-size applied via CSS *before* JS ever runs, so the very
+ * first paint (including on a hard reload, before hydration/effects fire)
+ * is already close to the final size instead of the browser default
+ * (~16px), which is what caused the "tiny then suddenly huge" flash.
+ * Tuned to roughly track the real fit-to-column calculation across
+ * common viewport widths.
+ */
+const NAME_FALLBACK_SIZE = "clamp(3.2rem, 13vw, 11rem)";
+
 /** Sets the name's font-size so it fills its column, height-capped. */
 function useFitToColumn() {
   const boxRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  // Tracks whether the *real* measured size has been applied yet. Until
+  // then we keep the element hidden so users never see the CSS fallback
+  // snap to the measured value either — only one clean reveal.
+  const [ready, setReady] = useState(false);
 
   const fit = useCallback(() => {
     const box = boxRef.current;
@@ -84,6 +99,7 @@ function useFitToColumn() {
     const byHeight = window.innerHeight * HEIGHT_CAP;
 
     el.style.fontSize = `${Math.min(byWidth, byHeight)}px`;
+    setReady(true);
   }, []);
 
   useEffect(() => {
@@ -111,7 +127,7 @@ function useFitToColumn() {
     };
   }, [fit]);
 
-  return { boxRef, textRef };
+  return { boxRef, textRef, ready };
 }
 
 /* ── Scroll Down Hover Component ── */
@@ -186,8 +202,8 @@ const ScrollDownLink = () => {
   );
 };
 
-const HeroSection = forwardRef<HTMLElement, { mouseOffset?: { x: number; y: number } }>(function HeroSection(_, ref) {
-  const { boxRef, textRef } = useFitToColumn();
+const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
+  const { boxRef, textRef, ready } = useFitToColumn();
   const stageRef = useRef<HTMLDivElement>(null);
 
   useIsoLayoutEffect(() => {
@@ -308,11 +324,18 @@ const HeroSection = forwardRef<HTMLElement, { mouseOffset?: { x: number; y: numb
         </div>
       </div>
 
-      {/* ── Split (single column on mobile — no figure there) ── */}
+      {/* ── Split (single column on mobile — no figure there) ──
+          `visibility` (not `display`) is gated on `ready` so the WHOLE hero
+          center content — figure image, eyebrow label, name, tagline, and
+          skills row — hides together and reveals together once the name's
+          real font-size has been measured. Using visibility instead of
+          display keeps layout/measurement intact while hidden, and avoids
+          any layout shift when it reveals. */}
       <div
         ref={stageRef}
         className="relative z-10 mx-auto grid h-full w-full max-w-[1640px] grid-cols-1
                    lg:grid-cols-[minmax(0,1fr)_minmax(0,0.68fr)]"
+        style={{ visibility: ready ? "visible" : "hidden" }}
       >
         {/* ── FIGURE PANEL — Background on mobile, right column on desktop ── */}
         <div className="absolute inset-0 z-0 opacity-20 pointer-events-none mix-blend-screen overflow-hidden
@@ -380,6 +403,16 @@ const HeroSection = forwardRef<HTMLElement, { mouseOffset?: { x: number; y: numb
                   ref={textRef}
                   aria-hidden="true"
                   className="flex w-max flex-col items-start"
+                  style={{
+                    // Fallback size shows immediately on first paint (SSR/hard
+                    // reload) instead of the browser default (~16px), so the
+                    // very first fit() measurement pass is already close to
+                    // correct. The actual hide/reveal now happens one level
+                    // up on the whole `stageRef` grid (see above), so the
+                    // whole hero content appears together in one clean reveal
+                    // instead of piece by piece.
+                    fontSize: NAME_FALLBACK_SIZE,
+                  }}
                 >
                   <span className="inline-block overflow-hidden pb-[0.03em]">
                     <span
