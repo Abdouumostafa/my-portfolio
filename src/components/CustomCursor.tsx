@@ -135,6 +135,7 @@ export default function CustomCursor(props: Partial<SnapCursorConfig> = {}) {
     };
 
     let target: HTMLElement | null = null;
+    let targetRadius = 8;
     let seeded = false;
     let presence = 0;
     let clickScale = 1;
@@ -155,6 +156,22 @@ export default function CustomCursor(props: Partial<SnapCursorConfig> = {}) {
       const next = el ? el.closest<HTMLElement>(cfg.current.selector) : null;
       if (next !== target) {
         target = next;
+        
+        // Cache target radius once per target change instead of 60fps
+        if (target) {
+          const style = window.getComputedStyle(target);
+          const radiusStr = style.borderRadius;
+          if (radiusStr.includes('%') || radiusStr.includes('999')) {
+            targetRadius = 999;
+          } else {
+            const parsed = parseFloat(radiusStr);
+            if (parsed === 0 && target.tagName === 'A') {
+              targetRadius = 999;
+            } else {
+              targetRadius = parsed || 8;
+            }
+          }
+        }
       }
     };
 
@@ -199,21 +216,7 @@ export default function CustomCursor(props: Partial<SnapCursorConfig> = {}) {
         tx = rect.left + rect.width / 2;
         ty = rect.top + rect.height / 2;
         lambda = reduced ? 999 : c.snapChase;
-
-        // Try to read border radius of the target element
-        const style = window.getComputedStyle(target);
-        const radiusStr = style.borderRadius;
-        if (radiusStr.includes('%') || radiusStr.includes('999')) {
-          tr = 999; // pill shape
-        } else {
-          const parsed = parseFloat(radiusStr);
-          // Default to pill shape for links, otherwise use element's radius or 8px
-          if (parsed === 0 && target.tagName === 'A') {
-            tr = 999;
-          } else {
-            tr = parsed || 8;
-          }
-        }
+        tr = targetRadius;
       }
 
       // Smoothly interpolate the ring to its targets
