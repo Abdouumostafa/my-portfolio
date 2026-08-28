@@ -77,24 +77,27 @@ export default function SectionTitle({
         stagger: 0.04,
       });
 
-      // 2. Continuous Floating Dots Animation
+      // 2. Floating Dots Animation — triggered only when section is visible
       const dotEls = gsap.utils.toArray(".st-dot") as HTMLElement[];
 
-      dotEls.forEach((dot) => {
-        const xOffset = gsap.utils.random(15, 35);
-        const yOffset = gsap.utils.random(15, 35);
-        const duration = gsap.utils.random(1.5, 2.5);
-        const delay = gsap.utils.random(0, 1);
+      dotEls.forEach((dot, index) => {
+        const xOffset = 15 + (index % 3) * 8;
+        const yOffset = 15 + (index % 2) * 10;
+        const duration = 2 + (index % 3) * 0.5;
 
         gsap.to(dot, {
           x: xOffset,
           y: yOffset,
-          rotation: 180,
           duration: duration,
-          delay: delay,
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
+          scrollTrigger: {
+            trigger: container,
+            start: "top 100%",
+            end: "bottom 0%",
+            toggleActions: "play pause resume pause",
+          },
         });
       });
     }, container);
@@ -117,7 +120,7 @@ export default function SectionTitle({
           key={index}
           className="char-wrap inline-block pt-[0.25em] mt-[-0.25em] pb-[0.05em] mb-[-0.05em]"
         >
-          <span className="st-char inline-block will-change-transform" style={chrome}>
+          <span className="st-char inline-block" style={chrome}>
             {char}
           </span>
         </span>
@@ -150,7 +153,6 @@ export default function SectionTitle({
         style={{
           fontSize: fontSizeClamp,
           width: width,
-          filter: "drop-shadow(0 12px 40px rgba(0, 0, 0, 0.5))",
         }}
       >
         {/* Line 1 */}

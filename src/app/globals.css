@@ -62,16 +62,18 @@
   --color-white-darker: #595959;
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-urbanist), sans-serif;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Hide system cursor on desktop since we use CustomCursor */
@@ -87,6 +89,13 @@ body {
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transform: translateZ(0);
+}
+
+/* ── Content Visibility for offscreen sections ── */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
 }
 
 /* ── Nav link (shared element — lives in the hero, gets reparented into the

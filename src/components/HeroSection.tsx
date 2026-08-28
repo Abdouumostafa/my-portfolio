@@ -285,7 +285,7 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_18%_28%,rgba(120,138,255,0.13),transparent_70%)] lg:bg-[radial-gradient(ellipse_26%_50%_at_74%_52%,rgba(120,138,255,0.16),transparent_70%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_92%_78%_at_50%_46%,transparent_46%,rgba(0,0,0,0.6)_100%)]" />
         <div
-          className="absolute inset-0 opacity-[0.12] mix-blend-overlay"
+          className="hidden sm:block absolute inset-0 opacity-[0.12] mix-blend-overlay pointer-events-none"
           style={{ backgroundImage: GRAIN, backgroundSize: "180px 180px" }}
         />
       </div>
@@ -293,7 +293,7 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
       {/* ── Bottom glow — behind the copy so it can't wash it out ── */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] flex justify-center mix-blend-screen"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-5 flex justify-center mix-blend-screen"
       >
         <Image
           src={heroBottomImg}

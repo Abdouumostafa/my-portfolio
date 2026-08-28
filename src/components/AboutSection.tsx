@@ -337,6 +337,12 @@ export default function AboutSection() {
             repeat: -1,
             yoyo: true,
             ease: "sine.inOut",
+            scrollTrigger: {
+              trigger: iconsAreaRef.current,
+              start: "top 100%",
+              end: "bottom 0%",
+              toggleActions: "play pause resume pause",
+            },
           });
         });
       });
