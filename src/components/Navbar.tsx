@@ -151,7 +151,14 @@ const Navbar = forwardRef<HTMLElement>(function Navbar(props, ref) {
             <button
               type="button"
               className="md:hidden flex flex-col items-start gap-1.25 p-1 pointer-events-auto"
-              onClick={(e) => { e.stopPropagation(); isMobileMenuOpen ? closeMenu() : openMenu(); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (isMobileMenuOpen) {
+                  closeMenu();
+                } else {
+                  openMenu();
+                }
+              }}
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMobileMenuOpen}
             >

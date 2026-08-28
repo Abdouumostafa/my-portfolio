@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Urbanist, BBH_Bartle } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
@@ -6,28 +6,71 @@ import CustomCursor from "@/components/CustomCursor";
 const urbanist = Urbanist({
   variable: "--font-urbanist",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  preload: true,
 });
 
 const bbhBartle = BBH_Bartle({
   variable: "--font-bbh-bartle",
   subsets: ["latin"],
   weight: ["400"],
+  display: "swap",
+  preload: true,
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abdelrahmanmostafa.com";
+
+export const viewport: Viewport = {
+  themeColor: "#171323",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Abdelrahman Mostafa | React Frontend Developer",
+  title: {
+    default: "Abdelrahman Mostafa | React Front-End Developer",
+    template: "%s | Abdelrahman Mostafa",
+  },
   description:
-    "Abdelrahman Mostafa — React front-end developer with 3+ years of experience building web apps, dashboards, and SaaS platforms. View projects and experience.",
+    "Abdelrahman Mostafa — React & Next.js Front-End Developer with 3+ years of experience crafting high-performance SaaS platforms, dashboards, and AI-integrated web applications.",
+  keywords: [
+    "Abdelrahman Mostafa",
+    "React Developer",
+    "Next.js Developer",
+    "Front-End Developer",
+    "TypeScript",
+    "Tailwind CSS",
+    "GSAP Animation",
+    "SaaS Engineer",
+    "Web Developer Cairo",
+    "Portfolio",
+  ],
+  authors: [{ name: "Abdelrahman Mostafa", url: siteUrl }],
+  creator: "Abdelrahman Mostafa",
+  publisher: "Abdelrahman Mostafa",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Abdelrahman Mostafa | React Frontend Developer",
+    title: "Abdelrahman Mostafa | React Front-End Developer",
     description:
-      "React front-end developer with 3+ years building high-performance web apps, dashboards, and SaaS platforms. Explore projects and experience.",
+      "React & Next.js Front-End Developer crafting high-performance SaaS platforms, dashboards, and AI-integrated web applications with a syntax-first approach.",
     url: "/",
-    siteName: "Abdelrahman Mostafa Portfolio",
+    siteName: "Abdelrahman Mostafa — Portfolio",
     locale: "en_US",
     type: "website",
     images: [
@@ -35,16 +78,17 @@ export const metadata: Metadata = {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Abdelrahman Mostafa — React Frontend Developer",
+        alt: "Abdelrahman Mostafa — React Front-End Developer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Abdelrahman Mostafa | React Frontend Developer",
+    title: "Abdelrahman Mostafa | React Front-End Developer",
     description:
-      "React front-end developer with 3+ years building high-performance web apps, dashboards, and SaaS platforms.",
+      "React & Next.js Front-End Developer crafting scalable, high-performance web applications.",
     images: ["/og.png"],
+    creator: "@Abdelrahman_Dev",
   },
   icons: {
     icon: "/logo.png",
@@ -53,30 +97,47 @@ export const metadata: Metadata = {
   },
 };
 
-/* JSON-LD structured data — helps search engines understand who this
-   site belongs to and surface rich results (knowledge panel, etc.). */
+/* JSON-LD structured data — helps search engines understand the profile */
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  mainEntity: {
-    "@type": "Person",
-    name: "Abdelrahman Mostafa",
-    jobTitle: "React Frontend Developer",
-    url: siteUrl,
-    sameAs: [
-      "https://github.com/Abdouumostafa",
-      "https://www.linkedin.com/in/abdelrahman-mostafa-489404224/",
-      "https://www.facebook.com/abdo.mostafa.551661",
-    ],
-    knowsAbout: [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "GSAP",
-      "Frontend Development",
-    ],
-  },
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#person`,
+      name: "Abdelrahman Mostafa",
+      jobTitle: "React Front-End Developer",
+      url: siteUrl,
+      sameAs: [
+        "https://github.com/Abdouumostafa",
+        "https://www.linkedin.com/in/abdelrahman-mostafa-489404224/",
+        "https://www.facebook.com/abdo.mostafa.551661",
+      ],
+      alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "Georgia State University at Cairo University",
+      },
+      knowsAbout: [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "JavaScript",
+        "Tailwind CSS",
+        "GSAP",
+        "Front-End Architecture",
+        "SaaS Development",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: "Abdelrahman Mostafa Portfolio",
+      publisher: {
+        "@id": `${siteUrl}/#person`,
+      },
+      inLanguage: "en-US",
+    },
+  ],
 };
 
 export default function RootLayout({

@@ -300,12 +300,14 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
           alt="Hero Bottom Glow Desktop"
           className="hidden h-auto w-full max-w-[1920px] object-cover sm:block"
           priority
+          sizes="(max-width: 1920px) 100vw, 1920px"
         />
         <Image
           src={heroBottomMobileImg}
           alt="Hero Bottom Glow Mobile"
           className="block h-auto w-full object-cover sm:hidden"
           priority
+          sizes="100vw"
         />
       </div>
 
@@ -355,7 +357,7 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
             <div className="hero-reveal-inner absolute inset-0 origin-bottom will-change-transform">
               <Image
                 src="/myImage.png"
-                alt="Abdelrahman Mostafa"
+                alt="Abdelrahman Mostafa — React Front-End Developer"
                 fill
                 priority
                 sizes="(max-width: 1023px) 1px, 30vw"

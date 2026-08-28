@@ -11,8 +11,14 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+/**
+ * التدرّج المعدني: عمودي (180deg) من الأبيض الساطع لحد الرمادي الغامق.
+ * المحطات مزاحة (12% → 88%) عشان الـ padding الموجود فوق وتحت الحرف —
+ * من غير الإزاحة دي طرفي التدرّج كانوا هيضيعوا في الفراغ بدل ما يبانوا على الحرف.
+ */
 const chrome: CSSProperties = {
-  backgroundImage: "linear-gradient(to bottom, #FFFFFF 0%, #F4F6FA 42%, #C6CCD8 80%, #949DAF 100%)",
+  backgroundImage:
+    "linear-gradient(180deg, #FFFFFF 12%, #F7F7FA 30%, #D2D2DB 54%, #9A9AA9 74%, #62626F 88%)",
   WebkitBackgroundClip: "text",
   backgroundClip: "text",
   color: "transparent",
@@ -33,8 +39,8 @@ export default function SectionTitle({
   line1,
   line2,
   className = "",
-  fontSizeClamp = "clamp(2rem, 8vw, 4.5rem)",
-  width = "100%"
+  fontSizeClamp = "clamp(2.75rem, 11vw, 7rem)",
+  width = "100%",
 }: SectionTitleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -56,31 +62,27 @@ export default function SectionTitle({
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
-          start: "top 85%", // Trigger when top of container hits 85% of viewport
+          start: "top 85%",
           toggleActions: "play none none reverse",
-        }
+        },
       });
 
-      // Set initial state for characters
       gsap.set(".char-wrap", { overflow: "hidden", display: "inline-block" });
       gsap.set(".st-char", { yPercent: 110 });
 
-      // Animate characters up
       tl.to(".st-char", {
         yPercent: 0,
         duration: 1.1,
         ease: "power4.out",
-        stagger: 0.04
+        stagger: 0.04,
       });
 
       // 2. Continuous Floating Dots Animation
       const dotEls = gsap.utils.toArray(".st-dot") as HTMLElement[];
 
       dotEls.forEach((dot) => {
-        // Randomize the animation slightly for each dot
         const xOffset = gsap.utils.random(15, 35);
         const yOffset = gsap.utils.random(15, 35);
-        // Faster duration!
         const duration = gsap.utils.random(1.5, 2.5);
         const delay = gsap.utils.random(0, 1);
 
@@ -92,10 +94,9 @@ export default function SectionTitle({
           delay: delay,
           repeat: -1,
           yoyo: true,
-          ease: "sine.inOut"
+          ease: "sine.inOut",
         });
       });
-
     }, container);
 
     return () => ctx.revert();
@@ -105,10 +106,17 @@ export default function SectionTitle({
   const splitText = (text: string) => {
     return text.split("").map((char, index) => {
       if (char === " ") {
-        return <span key={index} className="inline-block w-[0.25em]">&nbsp;</span>;
+        return (
+          <span key={index} className="inline-block w-[0.25em]">
+            &nbsp;
+          </span>
+        );
       }
       return (
-        <span key={index} className="char-wrap inline-block pt-[0.25em] mt-[-0.25em] pb-[0.05em] mb-[-0.05em]">
+        <span
+          key={index}
+          className="char-wrap inline-block pt-[0.25em] mt-[-0.25em] pb-[0.05em] mb-[-0.05em]"
+        >
           <span className="st-char inline-block will-change-transform" style={chrome}>
             {char}
           </span>
@@ -120,7 +128,7 @@ export default function SectionTitle({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full flex flex-col items-center justify-center py-10 overflow-visible select-none ${className}`}
+      className={`relative w-full flex flex-col items-center justify-center pt-4 sm:pt-10 overflow-visible select-none ${className}`}
     >
       {/* The Floating Dots */}
       {dots.map((dot, i) => (
@@ -130,20 +138,23 @@ export default function SectionTitle({
           style={{
             backgroundColor: dot.color,
             ...dot.initialPos,
-            boxShadow: `0 0 10px ${dot.color}80` // Add subtle glow
+            boxShadow: `0 0 10px ${dot.color}80`,
           }}
           aria-hidden="true"
         />
       ))}
 
       {/* The Typography */}
-      <h2 className="flex flex-col items-center font-bartle uppercase tracking-[-0.015em] leading-[0.65] text-center z-10"
-        style={{ fontSize: fontSizeClamp, width: width }}>
-
+      <h2
+        className="flex flex-col items-center font-bartle uppercase tracking-[-0.015em] leading-[0.65] text-center z-10 whitespace-nowrap"
+        style={{
+          fontSize: fontSizeClamp,
+          width: width,
+          filter: "drop-shadow(0 12px 40px rgba(0, 0, 0, 0.5))",
+        }}
+      >
         {/* Line 1 */}
-        <span className="inline-block w-full text-center">
-          {splitText(line1)}
-        </span>
+        <span className="inline-block w-full text-center">{splitText(line1)}</span>
 
         {/* Line 2 (Optional) */}
         {line2 && (
