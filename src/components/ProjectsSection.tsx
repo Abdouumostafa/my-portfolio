@@ -125,6 +125,7 @@ export default function ProjectsSection() {
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = e.touches[0].clientX; // Reset endX to prevent ghost swipes
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -423,12 +424,15 @@ export default function ProjectsSection() {
           </div>
 
           {/* Mobile Navigation Buttons (Below Text) */}
-          <div className="flex md:hidden items-center justify-center gap-4 mt-8">
+          <div className="flex md:hidden items-center justify-center gap-4 mt-8 relative z-50 pointer-events-auto">
             <button
               type="button"
-              onClick={handlePrev}
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrev();
+              }}
               aria-label="Previous project"
-              className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1428]/80 hover:bg-[#251D3A] border border-white/15 backdrop-blur-md text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF]"
+              className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1428]/80 hover:bg-[#251D3A] border border-white/15 backdrop-blur-md text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF] pointer-events-auto"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -443,9 +447,12 @@ export default function ProjectsSection() {
             </button>
             <button
               type="button"
-              onClick={handleNext}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNext();
+              }}
               aria-label="Next project"
-              className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1428]/80 hover:bg-[#251D3A] border border-white/15 backdrop-blur-md text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF]"
+              className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1428]/80 hover:bg-[#251D3A] border border-white/15 backdrop-blur-md text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF] pointer-events-auto"
             >
               <svg
                 viewBox="0 0 24 24"

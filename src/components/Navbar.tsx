@@ -175,11 +175,10 @@ const Navbar = forwardRef<HTMLElement>(function Navbar(props, ref) {
           {/* Desktop nav slots */}
           <div className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map((link) => (
-              <span key={link.id} data-nav-slot={link.id}
-                className="hero-nav-link text-sm opacity-0 select-none pointer-events-none"
-                aria-hidden="true"
+              <a key={link.id} href={link.href} data-nav-slot={link.id}
+                className="hero-nav-link text-sm opacity-0 select-none pointer-events-auto"
                 data-active={activeSection === link.id ? "true" : undefined}
-              >{link.label}</span>
+              >{link.label}</a>
             ))}
           </div>
 

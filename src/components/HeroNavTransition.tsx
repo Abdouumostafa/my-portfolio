@@ -24,29 +24,8 @@ export default function HeroNavTransition({
   const fixedLinksRef = useRef<HTMLDivElement>(null);
   const activeSection = useActiveSection(NAV_LINKS.map(l => l.id));
 
-  // Premium GSAP smooth scroll for all internal anchor links
-  useEffect(() => {
-    const handleAnchorClick = (e: MouseEvent) => {
-      const target = (e.target as HTMLElement).closest("a");
-      if (!target) return;
-
-      const href = target.getAttribute("href");
-      if (href && href.startsWith("#") && href.length > 1) {
-        e.preventDefault();
-        const dest = document.querySelector(href);
-        if (dest) {
-          gsap.to(window, {
-            duration: 1.2,
-            scrollTo: { y: dest, autoKill: true },
-            ease: "back.inOut(1)",
-          });
-        }
-      }
-    };
-
-    document.addEventListener("click", handleAnchorClick);
-    return () => document.removeEventListener("click", handleAnchorClick);
-  }, []);
+  // We use native CSS smooth scrolling in globals.css instead of intercepting clicks
+  // This guarantees reliable anchor linking across all devices.
 
   useGSAP(
     () => {
