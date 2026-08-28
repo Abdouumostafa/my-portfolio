@@ -1,15 +1,14 @@
 import HeroNavTransition from "@/components/HeroNavTransition";
 import SectionTitle from "@/components/SectionTitle";
 import AboutSection from "@/components/AboutSection";
+import ProjectsSection from "@/components/ProjectsSection";
 
 export default function Home() {
   return (
     <main>
       <HeroNavTransition>
         <AboutSection />
-        <section id="projects" className="content-auto min-h-screen bg-background flex flex-col items-center justify-center">
-          <SectionTitle line1="PROJECTS" />
-        </section>
+        <ProjectsSection />
         <section id="work" className="content-auto min-h-screen bg-grey-darker flex flex-col items-center justify-center">
           <SectionTitle line1="WORK" line2="EXPERIENCE" />
         </section>
