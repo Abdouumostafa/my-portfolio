@@ -42,7 +42,7 @@ export const DEFAULTS: SnapCursorConfig = {
   pad: 6, // Reduced from 8 for a tighter, sleeker fit
   chase: 12,
   snapChase: 20,
-  selector: "a, button, [role='button'], input, select, textarea, summary, [data-cursor]",
+  selector: "a, button, [role='button'], summary, [data-cursor]",
 };
 
 /** Frame-rate independent damping */

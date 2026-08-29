@@ -30,17 +30,21 @@ const chrome: CSSProperties = {
 interface SectionTitleProps {
   line1: string;
   line2?: string;
+  line3?: string;
   className?: string;
   fontSizeClamp?: string;
   width?: string;
+  align?: "left" | "center" | "right";
 }
 
 export default function SectionTitle({
   line1,
   line2,
+  line3,
   className = "",
   fontSizeClamp = "clamp(2.75rem, 11vw, 7rem)",
   width = "100%",
+  align = "center",
 }: SectionTitleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -128,10 +132,22 @@ export default function SectionTitle({
     });
   };
 
+  const alignClasses = {
+    left: "items-start text-left",
+    center: "items-center text-center",
+    right: "items-end text-right",
+  };
+
+  const spanAlignClasses = {
+    left: "text-left",
+    center: "text-center",
+    right: "text-right",
+  };
+
   return (
     <div
       ref={containerRef}
-      className={`relative w-full flex flex-col items-center justify-center pt-4 sm:pt-10 overflow-visible select-none ${className}`}
+      className={`relative w-full flex flex-col ${alignClasses[align]} justify-center pt-4 sm:pt-10 overflow-visible select-none ${className}`}
     >
       {/* The Floating Dots */}
       {dots.map((dot, i) => (
@@ -149,19 +165,26 @@ export default function SectionTitle({
 
       {/* The Typography */}
       <h2
-        className="flex flex-col items-center font-bartle uppercase tracking-[-0.015em] leading-[0.65] text-center z-10 whitespace-nowrap"
+        className={`flex flex-col ${alignClasses[align]} font-bartle uppercase tracking-[-0.015em] leading-[0.65] z-10 whitespace-nowrap`}
         style={{
           fontSize: fontSizeClamp,
           width: width,
         }}
       >
         {/* Line 1 */}
-        <span className="inline-block w-full text-center">{splitText(line1)}</span>
+        <span className={`inline-block w-full ${spanAlignClasses[align]}`}>{splitText(line1)}</span>
 
         {/* Line 2 (Optional) */}
         {line2 && (
-          <span className="inline-block w-full text-center mt-[-0.32em]">
+          <span className={`inline-block w-full mt-[-0.32em] ${spanAlignClasses[align]}`}>
             {splitText(line2)}
+          </span>
+        )}
+
+        {/* Line 3 (Optional) */}
+        {line3 && (
+          <span className={`inline-block w-full mt-[-0.32em] ${spanAlignClasses[align]}`}>
+            {splitText(line3)}
           </span>
         )}
       </h2>

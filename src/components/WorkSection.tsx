@@ -135,11 +135,6 @@ function Bullet({ text, compact }: { text: string; compact?: boolean; }) {
   );
 }
 
-/**
- * `masked` wraps each line for the desktop reveal. Wrapped paragraphs are
- * never masked on mobile — a two-line bullet inside an overflow-hidden box
- * clips badly at narrow widths.
- */
 function DetailList({
   details,
   masked,

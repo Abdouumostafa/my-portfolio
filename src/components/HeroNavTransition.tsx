@@ -85,7 +85,7 @@ export default function HeroNavTransition({
           // ── Socials elements (per-icon) ──
           const navSocials = navbar.querySelector("[data-nav-socials]") as HTMLElement | null;
 
-          const SOCIALS = ["github", "linkedin", "facebook"] as const;
+          const SOCIALS = ["github", "linkedin", "facebook", "whatsapp"] as const;
           type SocialKey = typeof SOCIALS[number];
 
           const heroSocialIcons: Partial<Record<SocialKey, HTMLElement>> = {};

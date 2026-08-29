@@ -1,5 +1,4 @@
 import HeroNavTransition from "@/components/HeroNavTransition";
-import SectionTitle from "@/components/SectionTitle";
 import AboutSection from "@/components/AboutSection";
 import dynamic from "next/dynamic";
 
@@ -12,21 +11,23 @@ const WorkSection = dynamic(() => import("@/components/WorkSection"), {
 const StatsSection = dynamic(() => import("@/components/StatsSection"), {
   ssr: true,
 });
+const SkillsSection = dynamic(() => import("@/components/SkillsSection"), {
+  ssr: true,
+});
+const ContactSection = dynamic(() => import("@/components/ContactSection"), {
+  ssr: true,
+});
 
 export default function Home() {
   return (
     <main>
       <HeroNavTransition>
         <AboutSection />
-        <ProjectsSection />
         <WorkSection />
+        <ProjectsSection />
         <StatsSection />
-        <section
-          id="skills"
-          className="content-auto min-h-screen bg-background flex flex-col items-center justify-center"
-        >
-          <SectionTitle line1="SKILLS &" line2="TECHNOLOGIES" />
-        </section>
+        <SkillsSection />
+        <ContactSection />
       </HeroNavTransition>
     </main>
   );

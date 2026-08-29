@@ -19,8 +19,8 @@ import heroBottomMobileImg from "../assets/hero/heroBottomMobile.png";
 const NAV_LINKS = [
   { id: "home", label: "Home", href: "#hero" },
   { id: "about", label: "About Me", href: "#about" },
-  { id: "projects", label: "Projects", href: "#projects" },
   { id: "work", label: "Work Experience", href: "#work" },
+  { id: "projects", label: "Projects", href: "#projects" },
   { id: "skills", label: "Skills & Tech", href: "#skills" },
 ];
 
