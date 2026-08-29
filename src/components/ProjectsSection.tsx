@@ -405,13 +405,13 @@ export default function ProjectsSection() {
           </button>
 
           {/* Centered Title & Description */}
-          <div ref={textContainerRef} className="flex flex-col items-center text-center max-w-2xl px-2 sm:px-6 mx-auto">
+          <div ref={textContainerRef} className="flex flex-col items-center text-center max-w-2xl px-2 sm:px-6 mx-auto h-[140px] sm:h-[160px] md:h-[180px] justify-start">
             <h3 className="anim-title text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold text-white tracking-tight">
               {activeProject.title}
             </h3>
 
             <p
-              className="anim-desc mt-3 text-sm sm:text-base md:text-lg leading-relaxed text-transparent bg-clip-text"
+              className="anim-desc mt-3 text-sm sm:text-base md:text-lg leading-relaxed text-transparent bg-clip-text line-clamp-3 md:line-clamp-4"
               style={{
                 backgroundImage: "linear-gradient(to right, #ffffff 50%, #8478A0 50%)",
                 backgroundSize: "200% 100%",
