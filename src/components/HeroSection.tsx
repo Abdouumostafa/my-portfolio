@@ -97,7 +97,7 @@ function useFitToColumn() {
     el.style.fontSize = `${Math.min(byWidth, byHeight)}px`;
   }, []);
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const box = boxRef.current;
     if (!box) return;
 

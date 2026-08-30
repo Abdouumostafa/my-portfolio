@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    @font-face {
+      font-family: 'BBH Bartle';
+      src: url('https://www.abdelrahmandev.com/_next/static/media/bbh-bartle.woff2') format('woff2'); /* or wherever it's hosted */
+    }
+    body { font-family: 'BBH Bartle', sans-serif; font-size: 100px; text-transform: uppercase; letter-spacing: -0.025em; }
+    .line { display: inline-block; }
+  </style>
+</head>
+<body>
+  <div id="test">Abdelrahman</div>
+  <script>
+    document.fonts.ready.then(() => {
+      console.log("Width:", document.getElementById('test').getBoundingClientRect().width);
+    });
+  </script>
+</body>
+</html>
