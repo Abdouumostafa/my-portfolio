@@ -218,11 +218,11 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      tl.set(".hero-reveal", { clipPath: "inset(100% 0% 0% 0%)" })
+      tl.set(".hero-reveal", { clipPath: "inset(100% 0% 0% 0%)", opacity: 1 })
         .set(".hero-reveal-inner", { scale: 1.12 })
-        .set(".hero-line", { yPercent: 118 })
-        .set(".hero-vrule", { scaleY: 0, transformOrigin: "top center" })
-        .set(".hero-hrule", { scaleX: 0, transformOrigin: "left center" })
+        .set(".hero-line", { yPercent: 118, opacity: 1 })
+        .set(".hero-vrule", { scaleY: 0, opacity: 1, transformOrigin: "top center" })
+        .set(".hero-hrule", { scaleX: 0, opacity: 1, transformOrigin: "left center" })
         .set(".hero-fade", { opacity: 0, y: 18 })
         .set(".tag-word", { opacity: 0, yPercent: 46 })
         .set(".tag-caret", { opacity: 1 });
@@ -342,7 +342,7 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
 
           {/* The figure is boxed rather than bleeding the full column —
               at full height it dominated the frame. */}
-          <div className="hero-reveal absolute inset-x-[7%] bottom-[13%] top-[27%] will-change-[clip-path]">
+          <div className="hero-reveal absolute inset-x-[7%] bottom-[13%] top-[27%] will-change-[clip-path] opacity-0">
             <div className="hero-reveal-inner absolute inset-0 origin-bottom will-change-transform">
               <Image
                 src="/myImage.png"
@@ -407,7 +407,7 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
                 >
                   <span className="inline-block overflow-hidden pb-[0.03em]">
                     <span
-                      className="hero-line inline-block whitespace-nowrap font-bartle uppercase leading-[0.84] tracking-[-0.025em] will-change-transform"
+                      className="hero-line opacity-0 inline-block whitespace-nowrap font-bartle uppercase leading-[0.84] tracking-[-0.025em] will-change-transform"
                       style={chrome}
                     >
                       Abdelrahman
@@ -416,7 +416,7 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
 
                   <span className="-mt-[0.2em] inline-block overflow-hidden pb-[0.05em]">
                     <span
-                      className="hero-line inline-block whitespace-nowrap font-bartle uppercase leading-[0.84] tracking-[-0.03em] will-change-transform"
+                      className="hero-line opacity-0 inline-block whitespace-nowrap font-bartle uppercase leading-[0.84] tracking-[-0.03em] will-change-transform"
                       style={chrome}
                     >
                       Mostafa
@@ -429,7 +429,7 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
             {/* Rule */}
             <span
               aria-hidden="true"
-              className="hero-hrule my-4 lg:my-8 block h-px w-full max-w-136 bg-linear-to-r from-white/25 to-transparent lg:mt-9"
+              className="hero-hrule opacity-0 my-4 lg:my-8 block h-px w-full max-w-136 bg-linear-to-r from-white/25 to-transparent lg:mt-9"
             />
 
             {/* Tagline — one colour, words settling in */}
@@ -440,7 +440,7 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
               {TAGLINE.split(" ").map((word, i) => (
                 <span
                   key={`${word}-${i}`}
-                  className="tag-word mr-[0.3em] inline-block will-change-transform"
+                  className="tag-word opacity-0 mr-[0.3em] inline-block will-change-transform"
                 >
                   {word}
                 </span>
@@ -448,7 +448,7 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
             </p>
 
             {/* Stack */}
-            <ul className="hero-fade mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 sm:mt-9 sm:gap-x-6">
+            <ul className="hero-fade opacity-0 mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 sm:mt-9 sm:gap-x-6">
               {STACK.map((item, i) => (
                 <li key={item} className="flex items-center gap-5 sm:gap-6">
                   {i > 0 && (
