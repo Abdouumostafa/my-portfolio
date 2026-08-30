@@ -299,7 +299,7 @@ export default function StatsSection() {
             />
             <div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
+                className="hidden sm:block pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
                 style={{ backgroundImage: NOISE }}
             />
 

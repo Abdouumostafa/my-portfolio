@@ -230,7 +230,7 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
         .set(".hero-vrule", { scaleY: 0, transformOrigin: "top center" })
         .set(".hero-hrule", { scaleX: 0, transformOrigin: "left center" })
         .set(".hero-fade", { opacity: 0, y: 18 })
-        .set(".tag-word", { opacity: 0, yPercent: 46, filter: "blur(7px)" })
+        .set(".tag-word", { opacity: 0, yPercent: 46 })
         .set(".tag-caret", { opacity: 1 });
 
       tl.to(
@@ -249,11 +249,10 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
           {
             opacity: 1,
             yPercent: 0,
-            filter: "blur(0px)",
             duration: 0.8,
             stagger: 0.048,
             ease: "power3.out",
-            clearProps: "filter,willChange",
+            clearProps: "willChange",
           },
           0.95
         )

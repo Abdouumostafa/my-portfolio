@@ -97,12 +97,12 @@ export default function ProjectsSection() {
 
       tl.fromTo(
         ".anim-title",
-        { y: 20, opacity: 0, filter: "blur(6px)" },
-        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "power2.out" }
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }
       ).fromTo(
         ".anim-desc",
-        { y: 20, opacity: 0, filter: "blur(6px)", backgroundPositionX: "100%" },
-        { y: 0, opacity: 1, filter: "blur(0px)", backgroundPositionX: "0%", duration: 1, ease: "power2.out" },
+        { y: 20, opacity: 0, backgroundPositionX: "100%" },
+        { y: 0, opacity: 1, backgroundPositionX: "0%", duration: 1, ease: "power2.out" },
         "-=0.3"
       );
     }, textContainerRef);

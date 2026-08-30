@@ -611,7 +611,7 @@ export default function WorkSection() {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-30 opacity-[0.04] mix-blend-overlay"
+        className="hidden sm:block pointer-events-none absolute inset-0 z-30 opacity-[0.04] mix-blend-overlay"
         style={{ backgroundImage: NOISE }}
       />
 
