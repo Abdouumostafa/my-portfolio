@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Urbanist, BBH_Bartle } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
+import { PROJECTS } from "@/data/projects";
 
 const urbanist = Urbanist({
   variable: "--font-urbanist",
@@ -137,6 +138,18 @@ const jsonLd = {
       },
       inLanguage: "en-US",
     },
+    ...PROJECTS.map((project) => ({
+      "@type": "SoftwareApplication",
+      "@id": `${siteUrl}/projects/${project.id}`,
+      name: project.title,
+      url: `${siteUrl}/projects/${project.id}`,
+      description:
+        project.summary || `${project.descPrefix} ${project.descSuffix}`,
+      applicationCategory: project.category,
+      author: {
+        "@id": `${siteUrl}/#person`,
+      },
+    })),
   ],
 };
 

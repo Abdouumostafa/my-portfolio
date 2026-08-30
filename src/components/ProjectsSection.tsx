@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
+import Link from "next/link";
 import SectionTitle from "./SectionTitle";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,79 +11,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// Project assets
-import alarmImg from "@/assets/alarmProject.jpg";
-import libyaZoneDashImg from "@/assets/libyaZoneDashboardProject.jpg";
-import libyaZoneWebImg from "@/assets/libyaZoneWebsiteProject.jpg";
-import newZeroImg from "@/assets/newZeroProject.png";
-import suqAljameuhDashImg from "@/assets/suqAljameuhDashboardProject.png";
-import suqAljameuhWebImg from "@/assets/suqAljameuhWebsiteProject.jpg";
-
-interface ProjectItem {
-  id: string;
-  title: string;
-  descPrefix: string;
-  descSuffix: string;
-  image: StaticImageData;
-  category: string;
-}
-
-const PROJECTS: ProjectItem[] = [
-  {
-    id: "newzero-dash",
-    title: "NewZero Car Care Dashboard",
-    descPrefix: "Multi-Branch Operations & Booking Control Panel,",
-    descSuffix:
-      "managing seven branches with real-time booking monitoring, service package pricing, crew scheduling, customer tiering, and revenue analytics.",
-    image: newZeroImg,
-    category: "SaaS Dashboard",
-  },
-  {
-    id: "libyazone-web",
-    title: "LibyaZone Global Shopping Platform",
-    descPrefix: "International Shopping & Door-to-Door Shipping Storefront,",
-    descSuffix:
-      "letting shoppers in Libya order products from worldwide stores with multi-currency pricing, upfront shipping estimates, and live shipment tracking.",
-    image: libyaZoneWebImg,
-    category: "Next.js / E-Commerce",
-  },
-  {
-    id: "libyazone-dash",
-    title: "LibyaZone Admin Dashboard",
-    descPrefix: "Cross-Border Orders & Shipping Operations Console,",
-    descSuffix:
-      "handling catalog and pricing rules, end-to-end order tracking from purchase abroad to delivery, wallet and refund management, and revenue reporting.",
-    image: libyaZoneDashImg,
-    category: "Operations Console",
-  },
-  {
-    id: "suq-web",
-    title: "Souq Al-Jumaa Marketplace",
-    descPrefix: "Peer-to-Peer Classifieds Platform for Web & Mobile,",
-    descSuffix:
-      "with photo-rich listings, category, location and condition filters, direct buyer-seller messaging, and a two-way rating system.",
-    image: suqAljameuhWebImg,
-    category: "Web Platform",
-  },
-  {
-    id: "suq-dash",
-    title: "Souq Al-Jumaa Admin Dashboard",
-    descPrefix: "Classifieds Moderation & Ad Monetization Console,",
-    descSuffix:
-      "managing listings and paid placements, a report and abuse review queue, live chat oversight, user tiering, and traffic and engagement analytics.",
-    image: suqAljameuhDashImg,
-    category: "SaaS Dashboard",
-  },
-  {
-    id: "alaram-pharmacy",
-    title: "Alaram Pharmacy Management System",
-    descPrefix: "Pharmacy Operations Platform with Contraindication Alerts,",
-    descSuffix:
-      "combining patient condition records, real-time restricted-medication warnings at point of sale, precise inventory tracking, and sales performance reports.",
-    image: alarmImg,
-    category: "Healthcare System",
-  },
-];
+import { PROJECTS } from "@/data/projects";
 
 export default function ProjectsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -359,13 +288,13 @@ export default function ProjectsSection() {
           })}
         </div>
 
-        {/* ── Action Button: Open All Projects ── */}
+        {/* ── Action Button: View Project Details ── */}
         <div className="mt-8 sm:mt-10 z-20">
-          <button
-            type="button"
+          <Link
+            href={`/projects/${activeProject.id}`}
             className="group inline-flex items-center gap-2 rounded-full bg-[#1E35FF] px-6 sm:px-7 py-2.5 sm:py-3 font-semibold text-xs sm:text-sm text-white shadow-[0_0_24px_rgba(30,53,255,0.45)] transition-all duration-300 hover:bg-[#1b30e6] hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <span>Open All Projects</span>
+            <span>View Project Details</span>
             <svg
               className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               viewBox="0 0 24 24"
@@ -379,7 +308,7 @@ export default function ProjectsSection() {
               <line x1="7" y1="17" x2="17" y2="7" />
               <polyline points="7 7 17 7 17 17" />
             </svg>
-          </button>
+          </Link>
         </div>
 
         {/* ── Active Project Info with Left & Right Nav Buttons (Matching Reference Design) ── */}

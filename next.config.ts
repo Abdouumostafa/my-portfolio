@@ -37,6 +37,17 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // Static assets imported by Next.js are content-hashed, so they can
+        // be cached indefinitely. This dramatically reduces repeat-visit load times.
+        source: "/_next/static/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
         source: "/assets/(.*)",
         headers: [
           {

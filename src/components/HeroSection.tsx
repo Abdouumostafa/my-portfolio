@@ -22,6 +22,7 @@ const NAV_LINKS = [
   { id: "work", label: "Work Experience", href: "#work" },
   { id: "projects", label: "Projects", href: "#projects" },
   { id: "skills", label: "Skills & Tech", href: "#skills" },
+  { id: "contact", label: "Contact Me", href: "#contact" },
 ];
 
 const STACK = ["React", "Next.js", "TypeScript", "Tailwind", "GSAP"];

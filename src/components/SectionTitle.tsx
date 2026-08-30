@@ -16,16 +16,16 @@ if (typeof window !== "undefined") {
  * المحطات مزاحة (12% → 88%) عشان الـ padding الموجود فوق وتحت الحرف —
  * من غير الإزاحة دي طرفي التدرّج كانوا هيضيعوا في الفراغ بدل ما يبانوا على الحرف.
  */
-const chrome: CSSProperties = {
+const getChromeStyle = (customGradient?: string): CSSProperties => ({
   backgroundImage:
-    "linear-gradient(180deg, #FFFFFF 12%, #F7F7FA 30%, #D2D2DB 54%, #9A9AA9 74%, #62626F 88%)",
+    customGradient || "linear-gradient(180deg, #FFFFFF 12%, #F7F7FA 30%, #D2D2DB 54%, #9A9AA9 74%, #62626F 88%)",
   WebkitBackgroundClip: "text",
   backgroundClip: "text",
   color: "transparent",
   WebkitTextFillColor: "transparent",
   paddingBottom: "0.28em",
   paddingTop: "0.2em",
-};
+});
 
 interface SectionTitleProps {
   line1: string;
@@ -35,6 +35,9 @@ interface SectionTitleProps {
   fontSizeClamp?: string;
   width?: string;
   align?: "left" | "center" | "right";
+  gradient?: string;
+  hideDots?: boolean;
+  disableAnimation?: boolean;
 }
 
 export default function SectionTitle({
@@ -45,6 +48,9 @@ export default function SectionTitle({
   fontSizeClamp = "clamp(2.75rem, 11vw, 7rem)",
   width = "100%",
   align = "center",
+  gradient,
+  hideDots = false,
+  disableAnimation = false,
 }: SectionTitleProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -58,6 +64,8 @@ export default function SectionTitle({
   ];
 
   useIsoLayoutEffect(() => {
+    if (disableAnimation) return;
+    
     const container = containerRef.current;
     if (!container) return;
 
@@ -124,7 +132,7 @@ export default function SectionTitle({
           key={index}
           className="char-wrap inline-block pt-[0.25em] mt-[-0.25em] pb-[0.05em] mb-[-0.05em]"
         >
-          <span className="st-char inline-block" style={chrome}>
+          <span className="st-char inline-block" style={getChromeStyle(gradient)}>
             {char}
           </span>
         </span>
@@ -150,7 +158,7 @@ export default function SectionTitle({
       className={`relative w-full flex flex-col ${alignClasses[align]} justify-center pt-4 sm:pt-10 overflow-visible select-none ${className}`}
     >
       {/* The Floating Dots */}
-      {dots.map((dot, i) => (
+      {!hideDots && dots.map((dot, i) => (
         <div
           key={i}
           className={`st-dot absolute rounded-full ${dot.size}`}
