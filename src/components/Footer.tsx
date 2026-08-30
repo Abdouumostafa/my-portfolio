@@ -16,7 +16,7 @@ export default function Footer() {
             src={footerBg}
             alt="Footer Background"
             fill
-            priority
+            loading="lazy"
             className="object-cover object-top opacity-80"
           />
         </div>

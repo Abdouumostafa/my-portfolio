@@ -6,7 +6,6 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
 } from "react";
 import type { CSSProperties } from "react";
 import gsap from "gsap";
@@ -78,10 +77,6 @@ const NAME_FALLBACK_SIZE = "clamp(3.2rem, 13vw, 11rem)";
 function useFitToColumn() {
   const boxRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  // Tracks whether the *real* measured size has been applied yet. Until
-  // then we keep the element hidden so users never see the CSS fallback
-  // snap to the measured value either — only one clean reveal.
-  const [ready, setReady] = useState(false);
 
   const fit = useCallback(() => {
     const box = boxRef.current;
@@ -100,7 +95,6 @@ function useFitToColumn() {
     const byHeight = window.innerHeight * HEIGHT_CAP;
 
     el.style.fontSize = `${Math.min(byWidth, byHeight)}px`;
-    setReady(true);
   }, []);
 
   useEffect(() => {
@@ -128,7 +122,7 @@ function useFitToColumn() {
     };
   }, [fit]);
 
-  return { boxRef, textRef, ready };
+  return { boxRef, textRef };
 }
 
 /* ── Scroll Down Hover Component ── */
@@ -204,7 +198,7 @@ const ScrollDownLink = () => {
 };
 
 const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
-  const { boxRef, textRef, ready } = useFitToColumn();
+  const { boxRef, textRef } = useFitToColumn();
   const stageRef = useRef<HTMLDivElement>(null);
 
   useIsoLayoutEffect(() => {
@@ -295,19 +289,21 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 z-5 flex justify-center mix-blend-screen"
       >
+        {/* Mobile LCP image first so browser discovers it earliest */}
+        <Image
+          src={heroBottomMobileImg}
+          alt="Hero Bottom Glow Mobile"
+          className="block h-auto w-full object-cover sm:hidden"
+          priority
+          fetchPriority="high"
+          sizes="100vw"
+        />
         <Image
           src={heroBottomImg}
           alt="Hero Bottom Glow Desktop"
           className="hidden h-auto w-full max-w-[1920px] object-cover sm:block"
           priority
           sizes="(max-width: 1920px) 100vw, 1920px"
-        />
-        <Image
-          src={heroBottomMobileImg}
-          alt="Hero Bottom Glow Mobile"
-          className="block h-auto w-full object-cover sm:hidden"
-          priority
-          sizes="100vw"
         />
       </div>
 
@@ -326,18 +322,11 @@ const HeroSection = forwardRef<HTMLElement>(function HeroSection(_, ref) {
         </div>
       </div>
 
-      {/* ── Split (single column on mobile — no figure there) ──
-          `visibility` (not `display`) is gated on `ready` so the WHOLE hero
-          center content — figure image, eyebrow label, name, tagline, and
-          skills row — hides together and reveals together once the name's
-          real font-size has been measured. Using visibility instead of
-          display keeps layout/measurement intact while hidden, and avoids
-          any layout shift when it reveals. */}
+      {/* ── Split (single column on mobile — no figure there) ── */}
       <div
         ref={stageRef}
         className="relative z-10 mx-auto grid h-full w-full max-w-[1640px] grid-cols-1
                    lg:grid-cols-[minmax(0,1fr)_minmax(0,0.68fr)]"
-        style={{ visibility: ready ? "visible" : "hidden" }}
       >
         {/* ── FIGURE PANEL — Background on mobile, right column on desktop ── */}
         <div className="absolute inset-0 z-0 opacity-20 pointer-events-none mix-blend-screen overflow-hidden
