@@ -459,7 +459,7 @@ export default function AboutSection() {
                 {/* Address Bar — min-w-0 هو اللي بيخلي truncate تشتغل */}
                 <div className="flex min-w-0 flex-1 relative items-center h-7 sm:h-9 rounded-full bg-[#2C233E] border border-white/5 pl-2 pr-8 sm:pl-4 sm:pr-9">
                   <span className="block min-w-0 flex-1 truncate text-center text-[10px] sm:text-xs text-white/50 font-medium tracking-wide">
-                    Www.Abdelrahmanmostafa.com
+                    Www.Abdelrahmandev.com
                   </span>
 
                   <button

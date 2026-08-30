@@ -20,7 +20,7 @@ const bbhBartle = BBH_Bartle({
   preload: true,
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abdelrahmanmostafa.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://abdelrahmandev.com";
 
 export const viewport: Viewport = {
   themeColor: "#171323",

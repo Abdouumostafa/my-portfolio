@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!project) return { title: "Project not found" };
 
   const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://abdelrahmanmostafa.com";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://abdelrahmandev.com";
   const pageUrl = `${siteUrl}/projects/${id}`;
   const description = project.summary || `${project.descPrefix} ${project.descSuffix}`;
   const ogImages = project.image
