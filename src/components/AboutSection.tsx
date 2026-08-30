@@ -549,8 +549,8 @@ export default function AboutSection() {
 
               {/* Download CV Button */}
               <a
-                href="/cv.pdf"
-                download
+                href="/Abdelrahman_Mostafa_CV.pdf"
+                download="Abdelrahman_Mostafa_CV.pdf"
                 aria-label="Download Abdelrahman Mostafa's Curriculum Vitae (CV)"
                 className="absolute left-1/2 -translate-x-1/2 bottom-[8%] sm:bottom-12 lg:left-auto lg:right-0 lg:translate-x-0 lg:bottom-8 z-30 group flex items-center gap-2 rounded-full bg-[#1E35FF] px-5 py-2.5 sm:px-6 sm:py-3 font-semibold text-[13px] sm:text-sm text-white whitespace-nowrap transition-all hover:bg-[#1b30e6] hover:scale-105 shadow-[0_0_20px_rgba(30,53,255,0.3)]"
               >
