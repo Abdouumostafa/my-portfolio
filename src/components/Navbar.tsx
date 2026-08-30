@@ -150,7 +150,7 @@ const Navbar = forwardRef<HTMLElement>(function Navbar(props, ref) {
           <div className="flex items-center">
             <button
               type="button"
-              className="md:hidden flex flex-col items-start gap-1.25 p-1 pointer-events-auto"
+              className="md:hidden flex flex-col items-start gap-1.25 p-1"
               onClick={(e) => {
                 e.stopPropagation();
                 if (isMobileMenuOpen) {
@@ -176,14 +176,14 @@ const Navbar = forwardRef<HTMLElement>(function Navbar(props, ref) {
           <div className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map((link) => (
               <a key={link.id} href={link.href} data-nav-slot={link.id}
-                className="hero-nav-link text-sm opacity-0 select-none pointer-events-auto"
+                className="hero-nav-link text-sm opacity-0 select-none"
                 data-active={activeSection === link.id ? "true" : undefined}
               >{link.label}</a>
             ))}
           </div>
 
           {/* Right: Socials — landing slot fades in after hero Socials fly here */}
-          <div data-nav-socials style={{ opacity: 0 }} className="flex items-center justify-end pointer-events-auto">
+          <div data-nav-socials style={{ opacity: 0 }} className="flex items-center justify-end">
             <SocialIcons className="flex items-center gap-4 text-white" iconClassName="size-[1.15rem] sm:size-6" />
           </div>
         </div>

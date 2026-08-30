@@ -304,13 +304,11 @@ export default function SkillsSection() {
               {
                 autoAlpha: 0,
                 y: 60,
-                filter: "blur(8px)",
                 scale: 0.95,
               },
               {
                 autoAlpha: 1,
                 y: 0,
-                filter: "blur(0px)",
                 scale: 1,
                 duration: 0.9,
                 ease: "back.out(1.2)",

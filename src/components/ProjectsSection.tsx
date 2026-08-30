@@ -128,7 +128,7 @@ export default function ProjectsSection() {
         opacity: 0,
         zIndex: 0,
         pointerEvents: "none" as const,
-        filter: "blur(8px)",
+        filter: isMobile ? "none" : "blur(8px)",
       };
     }
 
@@ -138,7 +138,7 @@ export default function ProjectsSection() {
         transform: "translateX(0%) translateY(-28px) translateZ(100px) scale(1) rotate(0deg)",
         opacity: 1,
         zIndex: 30,
-        filter: "blur(0px)",
+        filter: isMobile ? "none" : "blur(0px)",
         pointerEvents: "auto" as const,
       };
     }
@@ -153,7 +153,7 @@ export default function ProjectsSection() {
         transform: `translateX(${translateX}) translateY(${translateY}) translateZ(40px) rotateY(10deg) rotateZ(${rotateZ}) scale(${scale})`,
         opacity: 0.85,
         zIndex: 20,
-        filter: "blur(3.5px) brightness(0.85)",
+        filter: isMobile ? "none" : "blur(3.5px) brightness(0.85)",
         pointerEvents: "auto" as const,
       };
     }
@@ -168,7 +168,7 @@ export default function ProjectsSection() {
         transform: `translateX(${translateX}) translateY(${translateY}) translateZ(40px) rotateY(-10deg) rotateZ(${rotateZ}) scale(${scale})`,
         opacity: 0.85,
         zIndex: 20,
-        filter: "blur(3.5px) brightness(0.85)",
+        filter: isMobile ? "none" : "blur(3.5px) brightness(0.85)",
         pointerEvents: "auto" as const,
       };
     }
@@ -179,7 +179,7 @@ export default function ProjectsSection() {
         transform: "translateX(-84%) translateY(105px) translateZ(-20px) rotateY(20deg) rotateZ(-16deg) scale(0.70)",
         opacity: 0.45,
         zIndex: 10,
-        filter: "blur(7px) brightness(0.65)",
+        filter: isMobile ? "none" : "blur(7px) brightness(0.65)",
         pointerEvents: "auto" as const,
       };
     }
@@ -190,7 +190,7 @@ export default function ProjectsSection() {
         transform: "translateX(84%) translateY(105px) translateZ(-20px) rotateY(-20deg) rotateZ(16deg) scale(0.70)",
         opacity: 0.45,
         zIndex: 10,
-        filter: "blur(7px) brightness(0.65)",
+        filter: isMobile ? "none" : "blur(7px) brightness(0.65)",
         pointerEvents: "auto" as const,
       };
     }
@@ -277,9 +277,9 @@ export default function ProjectsSection() {
                       className="object-cover object-top transition-transform duration-700 ease-out"
                       priority={isCenter}
                     />
-                    {/* Darker blur overlay on inactive cards */}
+                    {/* Darker overlay on inactive cards */}
                     {!isCenter && (
-                      <div className="absolute inset-0 bg-[#08060F]/40 backdrop-blur-[1px] pointer-events-none transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-[#08060F]/60 pointer-events-none transition-opacity duration-500" />
                     )}
                   </div>
                 </div>
@@ -319,7 +319,7 @@ export default function ProjectsSection() {
             type="button"
             onClick={handlePrev}
             aria-label="Previous project"
-            className="hidden md:flex group flex-shrink-0 h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-[#1A1428]/80 hover:bg-[#251D3A] border border-white/15 backdrop-blur-md text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF]"
+            className="hidden md:flex group flex-shrink-0 h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-[#1A1428]/90 hover:bg-[#251D3A] border border-white/15 text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF]"
           >
             <svg
               viewBox="0 0 24 24"
@@ -361,7 +361,7 @@ export default function ProjectsSection() {
                 handlePrev();
               }}
               aria-label="Previous project"
-              className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1428]/80 hover:bg-[#251D3A] border border-white/15 backdrop-blur-md text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF] pointer-events-auto"
+              className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1428]/90 hover:bg-[#251D3A] border border-white/15 text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF] pointer-events-auto"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -381,7 +381,7 @@ export default function ProjectsSection() {
                 handleNext();
               }}
               aria-label="Next project"
-              className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1428]/80 hover:bg-[#251D3A] border border-white/15 backdrop-blur-md text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF] pointer-events-auto"
+              className="group flex h-12 w-12 items-center justify-center rounded-full bg-[#1A1428]/90 hover:bg-[#251D3A] border border-white/15 text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF] pointer-events-auto"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -401,7 +401,7 @@ export default function ProjectsSection() {
             type="button"
             onClick={handleNext}
             aria-label="Next project"
-            className="hidden md:flex group flex-shrink-0 h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-[#1A1428]/80 hover:bg-[#251D3A] border border-white/15 backdrop-blur-md text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF]"
+            className="hidden md:flex group flex-shrink-0 h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-[#1A1428]/90 hover:bg-[#251D3A] border border-white/15 text-white shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1E35FF]"
           >
             <svg
               viewBox="0 0 24 24"

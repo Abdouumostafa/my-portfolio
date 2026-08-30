@@ -161,11 +161,10 @@ function CareerSnapshot() {
       // الكروت بتطلع من تحت مع إزالة البلور، واحد ورا التانى
       gsap.fromTo(
         ".career-card",
-        { y: 44, autoAlpha: 0, filter: "blur(10px)" },
+        { y: 44, autoAlpha: 0 },
         {
           y: 0,
           autoAlpha: 1,
-          filter: "blur(0px)",
           duration: 0.9,
           stagger: 0.13,
           ease: "power3.out",
@@ -295,7 +294,6 @@ export default function AboutSection() {
       if (textContainerRef.current) {
         gsap.to(".about-word", {
           color: "#FFFFFF",
-          filter: "blur(0px)",
           duration: 0.6,
           stagger: 0.08,
           ease: "power2.out",
@@ -414,10 +412,9 @@ export default function AboutSection() {
     if (textContainerRef.current) {
       gsap.fromTo(
         ".about-word",
-        { color: "#443959", filter: "blur(4px)" },
+        { color: "#443959" },
         {
           color: "#FFFFFF",
-          filter: "blur(0px)",
           duration: 0.6,
           stagger: 0.08,
           ease: "power2.out",
@@ -496,8 +493,8 @@ export default function AboutSection() {
                   {words.map((word, i) => (
                     <span
                       key={i}
-                      className="about-word inline-block mr-[0.25em] will-change-[color,filter]"
-                      style={{ color: "#443959", filter: "blur(4px)" }}
+                      className="about-word inline-block mr-[0.25em] will-change-[color]"
+                      style={{ color: "#443959" }}
                     >
                       {word}
                     </span>
